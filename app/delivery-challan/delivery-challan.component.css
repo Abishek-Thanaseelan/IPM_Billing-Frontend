@@ -1,0 +1,116 @@
+.dc-wrapper {
+  padding: 20px;
+  background: #f8f9fa;
+  min-height: 100vh;
+}
+
+.dc-header {
+  background: #fff;
+  border-radius: 12px;
+  padding: 16px 20px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.header-top {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.home-btn {
+  background: #6c757d;
+  color: #fff;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.home-btn:hover { background: #5a6268; }
+
+.dc-header h2 {
+  font-size: 22px;
+  font-weight: 700;
+  color: #1e293b;
+  margin: 0;
+}
+
+.filter-card {
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+.card {
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.section-heading {
+  font-size: 15px;
+  font-weight: 700;
+  color: #2563eb;
+  margin-bottom: 12px;
+  padding-bottom: 6px;
+  border-bottom: 2px solid #e2e8f0;
+}
+
+.form-label {
+  font-weight: 600;
+  color: #475569;
+  font-size: 13px;
+}
+
+.form-control {
+  border-radius: 8px;
+  border: 1px solid #cbd5e1;
+  padding: 8px 12px;
+  font-size: 14px;
+}
+
+.form-control:focus {
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37,99,235,0.15);
+}
+
+.table thead th {
+  background: #2563eb;
+  color: #fff;
+  font-weight: 600;
+  font-size: 13px;
+  white-space: nowrap;
+}
+
+.table td { font-size: 13px; vertical-align: middle; }
+
+.table tbody tr:hover { background: #e8f0fe; }
+
+.sortable { cursor: pointer; user-select: none; }
+.sortable:hover { background: #1d4ed8; }
+
+.badge { font-size: 12px; }
+
+.btn { border-radius: 8px; font-size: 13px; font-weight: 600; }
+
+.pagination .page-link {
+  border-radius: 6px;
+  margin: 0 2px;
+  font-size: 13px;
+  color: #2563eb;
+  cursor: pointer;
+}
+
+.pagination .page-item.active .page-link {
+  background: #2563eb;
+  border-color: #2563eb;
+  color: #fff;
+}
+
+@media print {
+  .dc-header, .filter-card, .pagination, .btn { display: none !important; }
+}

@@ -1,0 +1,77 @@
+<div class="register-page">
+  <div class="register-container">
+    <!-- LEFT SIDE -->
+
+    <div class="left-section">
+      <img src="assets/icon.png" alt="Logo" class="company-logo" />
+
+      <h1>IPMEGA ENTERPRISES</h1>
+
+      <!-- <p>User Registration Portal</p> -->
+    </div>
+
+    <!-- RIGHT SIDE -->
+
+    <div class="right-section">
+      <h2 class="text-center mb-4">Register User</h2>
+
+      <input
+        class="form-control mb-3"
+        placeholder="UserName"
+        [(ngModel)]="registerData.name"
+      />
+
+      <input
+        class="form-control mb-3"
+        placeholder="Mobile"
+        maxlength="10"
+        [(ngModel)]="registerData.mobile"
+        (keypress)="allowOnlyDigits($event)"
+      />
+
+      <input
+        class="form-control mb-3"
+        placeholder="Email"
+        [(ngModel)]="registerData.email"
+      />
+
+      <div class="password-wrapper mb-3">
+        <input
+          [type]="showPassword ? 'text' : 'password'"
+          class="form-control"
+          placeholder="Password"
+          [(ngModel)]="registerData.password"
+        />
+
+        <i
+          class="fa"
+          [ngClass]="showPassword ? 'fa-eye-slash' : 'fa-eye'"
+          (click)="togglePassword()"
+        >
+        </i>
+      </div>
+
+      <!-- <input
+        class="form-control mb-3"
+        type="date"
+        [(ngModel)]="registerData.dob"
+      /> -->
+<!-- 
+      <select class="form-control mb-4" [(ngModel)]="registerData.role">
+        <option value="">Select Role</option>
+        <option value="Admin">Admin</option>
+        <option value="Sales Person">Sales Person</option>
+      </select> -->
+
+      <button class="btn register-btn w-100" (click)="register()">
+        Register
+      </button>
+
+      <div class="login-link text-center mt-3">
+        Already have an account?
+
+        <a routerLink="/login"> Login </a>
+      </div>
+    </div>
+  </div>
+</div>

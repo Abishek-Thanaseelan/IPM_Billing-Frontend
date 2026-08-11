@@ -1,0 +1,182 @@
+<div class="dc-wrapper">
+  <!-- LIST VIEW -->
+  <div *ngIf="view === 'list'">
+    <div class="dc-header">
+      <div class="header-top">
+        <button class="home-btn" routerLink="/dashboard"><i class="fa fa-home"></i> Home</button>
+        <h2><i class="fa fa-truck"></i> Delivery Challans</h2>
+      </div>
+      <button class="btn btn-primary" (click)="openNewChallan()">
+        <i class="fa fa-plus me-1"></i> New Challan
+      </button>
+    </div>
+
+    <div class="card filter-card p-3 mt-3">
+      <div class="row g-3 align-items-end">
+        <div class="col-md-2">
+          <label class="form-label fw-bold">From Date</label>
+          <input type="date" class="form-control" [(ngModel)]="fromDate" />
+        </div>
+        <div class="col-md-2">
+          <label class="form-label fw-bold">To Date</label>
+          <input type="date" class="form-control" [(ngModel)]="toDate" />
+        </div>
+        <div class="col-md-3">
+          <label class="form-label fw-bold">Search</label>
+          <input type="text" class="form-control" [(ngModel)]="searchQuery" placeholder="Challan No / Customer" />
+        </div>
+        <div class="col-md-3 d-flex gap-2">
+          <button class="btn btn-primary" (click)="applyFilter()"><i class="fa fa-search me-1"></i> Filter</button>
+          <button class="btn btn-secondary" (click)="resetFilter()"><i class="fa fa-refresh me-1"></i> Reset</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="card mt-3 p-3" *ngIf="loading">
+      <div class="text-center py-4"><i class="fa fa-spinner fa-spin fa-2x"></i></div>
+    </div>
+
+    <div class="card mt-3 p-3" *ngIf="!loading">
+      <div class="table-responsive">
+        <table class="table table-bordered table-hover">
+          <thead class="table-primary">
+            <tr>
+              <th class="sortable" (click)="sortBy('challanNo')">Challan No <i class="fa {{getSortIcon('challanNo')}}"></i></th>
+              <th class="sortable" (click)="sortBy('challanDate')">Date <i class="fa {{getSortIcon('challanDate')}}"></i></th>
+              <th class="sortable" (click)="sortBy('customerName')">Customer <i class="fa {{getSortIcon('customerName')}}"></i></th>
+              <th>Purpose</th>
+              <th>Vehicle</th>
+              <th>Items</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let c of pagedChallans">
+              <td><strong>{{c.challanNo}}</strong></td>
+              <td>{{c.challanDate}}</td>
+              <td>{{c.customerName}}<br><small class="text-muted">{{c.customerMobile}}</small></td>
+              <td><span class="badge bg-info">{{c.purposeOfDelivery || '-'}}</span></td>
+              <td>{{c.vehicleNumber || '-'}}</td>
+              <td>{{c.items?.length || 0}} products</td>
+              <td>
+                <button class="btn btn-sm btn-primary me-1" (click)="printChallan(c)" title="Print"><i class="fa fa-print"></i></button>
+                <button class="btn btn-sm btn-danger me-1" (click)="downloadPdf(c)" title="PDF"><i class="fa fa-file-pdf-o"></i></button>
+                <button class="btn btn-sm btn-warning me-1" (click)="editChallan(c)" title="Edit"><i class="fa fa-edit"></i></button>
+                <button class="btn btn-sm btn-danger" (click)="deleteChallan(c._id)" title="Delete"><i class="fa fa-trash"></i></button>
+              </td>
+            </tr>
+            <tr *ngIf="pagedChallans.length === 0">
+              <td colspan="7" class="text-center py-3">No delivery challans found</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="d-flex justify-content-between align-items-center mt-2" *ngIf="filteredChallans.length > 0">
+        <span>Showing {{(currentPage-1)*pageSize+1}} to {{Math.min(currentPage*pageSize, filteredChallans.length)}} of {{filteredChallans.length}}</span>
+        <ul class="pagination mb-0">
+          <li class="page-item" [class.disabled]="currentPage===1"><a class="page-link" (click)="goToPage(currentPage-1)">Prev</a></li>
+          <li class="page-item" *ngFor="let p of [].constructor(totalPages); let i=index" [class.active]="currentPage===i+1"><a class="page-link" (click)="goToPage(i+1)">{{i+1}}</a></li>
+          <li class="page-item" [class.disabled]="currentPage===totalPages"><a class="page-link" (click)="goToPage(currentPage+1)">Next</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- FORM VIEW -->
+  <div *ngIf="view === 'form'">
+    <div class="dc-header">
+      <div class="header-top">
+        <button class="btn btn-secondary" (click)="resetForm(); view='list'"><i class="fa fa-arrow-left me-1"></i> Back</button>
+        <h2><i class="fa fa-truck"></i> {{isEditMode ? 'Edit' : 'New'}} Delivery Challan</h2>
+      </div>
+    </div>
+
+    <!-- Company Details -->
+    <div class="card mt-3 p-3">
+      <h5 class="section-heading"><i class="fa fa-building me-1"></i> Company Details</h5>
+      <div class="row g-3">
+        <div class="col-md-3"><label class="form-label">Company Name</label><input type="text" class="form-control" [(ngModel)]="companyName" /></div>
+        <div class="col-md-3"><label class="form-label">Company Address</label><input type="text" class="form-control" [(ngModel)]="companyAddress" /></div>
+        <div class="col-md-3"><label class="form-label">GSTIN</label><input type="text" class="form-control" [(ngModel)]="companyGstin" /></div>
+        <div class="col-md-3"><label class="form-label">Mobile Number</label><input type="text" class="form-control" [(ngModel)]="companyMobile" /></div>
+      </div>
+    </div>
+
+    <!-- Challan Details -->
+    <div class="card mt-3 p-3">
+      <h5 class="section-heading"><i class="fa fa-file-text me-1"></i> Challan Details</h5>
+      <div class="row g-3">
+        <div class="col-md-3"><label class="form-label">Challan Number</label><input type="text" class="form-control" [value]="challanNo" readonly /></div>
+        <div class="col-md-3"><label class="form-label">Challan Date</label><input type="date" class="form-control" [(ngModel)]="challanDate" /></div>
+        <div class="col-md-3"><label class="form-label">Delivery Date</label><input type="date" class="form-control" [(ngModel)]="deliveryDate" /></div>
+        <div class="col-md-3"><label class="form-label">Vehicle Number</label><input type="text" class="form-control" [(ngModel)]="vehicleNumber" placeholder="MH-12-XX-1234" /></div>
+        <div class="col-md-3"><label class="form-label">Transporter Name</label><input type="text" class="form-control" [(ngModel)]="transporterName" /></div>
+        <div class="col-md-3"><label class="form-label">Driver Name</label><input type="text" class="form-control" [(ngModel)]="driverName" /></div>
+        <div class="col-md-3"><label class="form-label">Driver Mobile</label><input type="text" class="form-control" [(ngModel)]="driverMobile" maxlength="10" /></div>
+        <div class="col-md-3"><label class="form-label">E-Way Bill No</label><input type="text" class="form-control" [(ngModel)]="ewayBillNo" /></div>
+        <div class="col-md-3"><label class="form-label">Purpose of Delivery</label>
+          <select class="form-control" [(ngModel)]="purposeOfDelivery">
+            <option value="">Select Purpose</option>
+            <option *ngFor="let p of purposeOptions" [value]="p">{{p}}</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <!-- Customer Details -->
+    <div class="card mt-3 p-3">
+      <h5 class="section-heading"><i class="fa fa-user me-1"></i> Customer Details</h5>
+      <div class="row g-3">
+        <div class="col-md-3"><label class="form-label">Customer Name *</label><input type="text" class="form-control" [(ngModel)]="customerName" /></div>
+        <div class="col-md-3"><label class="form-label">Mobile Number</label><input type="text" class="form-control" [(ngModel)]="customerMobile" maxlength="10" /></div>
+        <div class="col-md-3"><label class="form-label">Address</label><input type="text" class="form-control" [(ngModel)]="customerAddress" /></div>
+        <div class="col-md-3"><label class="form-label">GSTIN (Optional)</label><input type="text" class="form-control" [(ngModel)]="customerGstin" /></div>
+      </div>
+    </div>
+
+    <!-- Product Details -->
+    <div class="card mt-3 p-3">
+      <h5 class="section-heading"><i class="fa fa-cubes me-1"></i> Product Details</h5>
+      <div class="row g-3 align-items-end">
+        <div class="col-md-3">
+          <label class="form-label">Select Product</label>
+          <select class="form-control" [(ngModel)]="selectedProductId" (change)="onProductSelect()">
+            <option value="">Select Product</option>
+            <option *ngFor="let p of activeProducts" [value]="p._id">{{p.productName}} {{p.productSize ? '- ' + p.productSize : ''}}</option>
+          </select>
+        </div>
+        <div class="col-md-2"><label class="form-label">Size</label><input type="text" class="form-control" [value]="itemProductSize" readonly /></div>
+        <div class="col-md-2"><label class="form-label">Quantity *</label><input type="number" class="form-control" [(ngModel)]="itemQty" min="1" /></div>
+        <div class="col-md-1"><label class="form-label">Unit</label><input type="text" class="form-control" [(ngModel)]="itemUnit" /></div>
+        <div class="col-md-2"><label class="form-label">Remarks</label><input type="text" class="form-control" [(ngModel)]="itemRemarks" /></div>
+        <div class="col-md-2"><button class="btn btn-success w-100" (click)="addItem()"><i class="fa fa-plus me-1"></i> Add</button></div>
+      </div>
+
+      <div class="table-responsive mt-3" *ngIf="items.length > 0">
+        <table class="table table-bordered table-sm">
+          <thead class="table-light">
+            <tr><th>#</th><th>Product Name</th><th>Size</th><th>Qty</th><th>Unit</th><th>Remarks</th><th>Action</th></tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of items; let i=index">
+              <td>{{i+1}}</td>
+              <td>{{item.productName}}</td>
+              <td>{{item.productSize}}</td>
+              <td>{{item.qty}}</td>
+              <td>{{item.unit}}</td>
+              <td>{{item.remarks || '-'}}</td>
+              <td><button class="btn btn-sm btn-danger" (click)="removeItem(i)"><i class="fa fa-trash"></i></button></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="d-flex justify-content-end gap-2 mt-3 mb-4">
+      <button class="btn btn-secondary" (click)="resetForm(); view='list'">Cancel</button>
+      <button class="btn btn-primary" (click)="saveChallan()">
+        <i class="fa fa-save me-1"></i> {{isEditMode ? 'Update Challan' : 'Save Challan'}}
+      </button>
+    </div>
+  </div>
+</div>

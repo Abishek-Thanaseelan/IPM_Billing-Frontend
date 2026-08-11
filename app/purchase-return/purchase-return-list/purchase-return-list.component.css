@@ -1,0 +1,308 @@
+/* =========================
+   PAGE
+========================= */
+
+body {
+  background: #f5f7fb;
+}
+
+.return-container,
+.container-fluid {
+  background: #f5f7fb;
+  min-height: 100vh;
+  padding-bottom: 30px;
+}
+
+/* =========================
+   MAIN CARD
+========================= */
+
+.card {
+  border: none !important;
+  border-radius: 18px !important;
+  overflow: hidden;
+}
+
+/* =========================
+   HEADER
+========================= */
+
+.card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: linear-gradient(
+    135deg,
+    #0d6efd,
+    #2563eb
+  ) !important;
+  color: white;
+}
+
+.card-header h4 {
+  margin: 0;
+  font-size: 24px;
+  font-weight: 700;
+}
+
+/* =========================
+   HOME BUTTON
+========================= */
+
+.home-btn {
+  background: white;
+  color: #0d6efd;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 10px;
+  font-weight: 600;
+  transition: 0.3s;
+}
+
+.home-btn:hover {
+  transform: translateY(-2px);
+}
+
+/* =========================
+   LOGOUT
+========================= */
+
+.logout-btn {
+  background: white;
+  color: #2563eb;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 10px;
+  font-weight: 600;
+  transition: 0.3s;
+}
+
+.logout-btn:hover {
+  transform: translateY(-2px);
+}
+
+/* =========================
+   FORM
+========================= */
+
+.form-label {
+  font-weight: 600;
+  color: #495057;
+  margin-bottom: 6px;
+}
+
+.form-control,
+.form-select {
+  height: 45px;
+  border-radius: 10px;
+  border: 1px solid #dbe1ea;
+  transition: 0.3s;
+}
+
+.form-control:focus,
+.form-select:focus {
+  border-color: #0d6efd;
+  box-shadow: 0 0 8px rgba(13,110,253,.2);
+}
+
+/* =========================
+   PRODUCT ENTRY CARD
+========================= */
+
+.card-header.bg-light {
+  background: #f8fafc !important;
+}
+
+.card-header.bg-light h5 {
+  color: #1e293b;
+  font-weight: 700;
+}
+
+/* =========================
+   BUTTONS
+========================= */
+
+.btn-success {
+  border-radius: 10px;
+  font-weight: 600;
+}
+
+.btn-primary {
+  border-radius: 10px;
+  font-weight: 600;
+}
+
+.btn-danger {
+  border-radius: 8px;
+}
+
+/* =========================
+   PRODUCT LIST
+========================= */
+
+.card-body h6 {
+  margin-bottom: 0;
+}
+
+.text-muted {
+  font-size: 12px;
+}
+
+.text-success {
+  color: #198754 !important;
+}
+
+/* =========================
+   SUMMARY CARD
+========================= */
+
+.summary-card {
+  background: white;
+}
+
+.summary-card .form-control {
+  font-weight: bold;
+  text-align: right;
+}
+
+/* =========================
+   SEARCH SECTION
+========================= */
+
+.search-box {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.search-box input {
+  flex: 1;
+}
+
+/* =========================
+   FLOATING HOME
+========================= */
+
+.floating-home {
+  position: fixed;
+  right: 25px;
+  bottom: 25px;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  border: none;
+  background: #0d6efd;
+  color: white;
+  font-size: 22px;
+  box-shadow: 0 8px 20px rgba(13,110,253,.35);
+  z-index: 999;
+  transition: 0.3s;
+}
+
+.floating-home:hover {
+  transform: scale(1.1);
+}
+
+/* =========================
+   PRODUCT ITEM CARD
+========================= */
+
+.card.border-0.shadow-sm.rounded-4.mb-3 {
+  transition: 0.3s;
+}
+
+.card.border-0.shadow-sm.rounded-4.mb-3:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgba(0,0,0,.08) !important;
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media (max-width: 768px) {
+
+  .card-header {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .card-header h4 {
+    font-size: 20px;
+  }
+
+  .floating-home {
+    width: 55px;
+    height: 55px;
+  }
+}
+
+
+.table {
+  border-radius: 12px;
+  overflow: hidden;
+  background: #fff;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+}
+
+/* Header style */
+.table thead {
+  background: linear-gradient(135deg, #0d6efd, #0a58ca);
+  color: #fff;
+}
+
+.table thead th {
+  font-weight: 600;
+  font-size: 14px;
+  padding: 12px;
+  border: none;
+}
+
+/* Body cells */
+.table tbody td {
+  padding: 10px;
+  font-size: 14px;
+  vertical-align: middle;
+}
+
+/* Hover effect */
+.table tbody tr:hover {
+  background: #f1f7ff;
+  transition: 0.2s ease-in-out;
+}
+
+/* Borders */
+.table-bordered td,
+.table-bordered th {
+  border: 1px solid #e5e5e5 !important;
+}
+
+/* Serial number column */
+.table tbody td:first-child {
+  font-weight: bold;
+  color: #0d6efd;
+}
+
+/* Total column highlight */
+.table tbody td:last-child {
+  font-weight: bold;
+  color: #198754;
+}
+
+/* Button style inside table */
+.btn-danger {
+  padding: 4px 10px;
+  font-size: 12px;
+  border-radius: 6px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .table {
+    font-size: 12px;
+  }
+
+  .table thead th {
+    font-size: 12px;
+  }
+}

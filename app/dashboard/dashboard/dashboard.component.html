@@ -1,0 +1,89 @@
+<div class="top-header">
+  <div>
+    <h1 class="company-name">IPMega Enterprises</h1>
+
+    <h2 class="dashboard-title">Dashboard</h2>
+  </div>
+</div>
+
+<div class="row g-4">
+  <div class="dashboard-summary">
+    <div class="dashboard-card sales-card">
+      <div class="icon-box">
+        <i class="fa fa-chart-line"></i>
+      </div>
+
+      <div class="card-content">
+        <h5>Total Sales</h5>
+
+        <h2>₹ {{ totalSalesAmount }}</h2>
+      </div>
+    </div>
+
+    <div class="dashboard-card purchase-card">
+      <div class="icon-box">
+        <i class="fa fa-cart-plus"></i>
+      </div>
+
+      <div class="card-content">
+        <h5>Total Purchase</h5>
+
+        <h2>{{ totalPurchaseAmount }}</h2>
+      </div>
+    </div>
+
+    <div class="dashboard-card expense-card">
+      <div class="icon-box">
+        <i class="fa fa-wallet"></i>
+      </div>
+
+      <div class="card-content">
+        <h5>Expenses</h5>
+
+        <h2>₹ 0</h2>
+      </div>
+    </div>
+  </div>
+
+  <div class="row mt-2">
+    <div class="col-12">
+      <div class="dashboard-card stock-card">
+        <div class="d-flex align-items-center mb-4">
+          <div class="icon-box me-3">
+            <i class="fa fa-boxes"></i>
+          </div>
+
+          <div>
+            <h5 class="mb-0">Live Stock Details</h5>
+          </div>
+        </div>
+
+        <div class="table-responsive">
+          <table class="table stock-table">
+            <thead>
+              <tr>
+                <th>Product</th>
+                <th>Size</th>
+                <th>Qty</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <tr *ngFor="let item of stockItems">
+                <td>{{ item.productName }}</td>
+
+                <td>{{ item.size || item.productSize }}</td>
+
+                <td>
+                  <span class="qty-badge">
+                    {{ item.qty }}
+                  </span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

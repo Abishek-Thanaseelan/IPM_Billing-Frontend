@@ -1,0 +1,246 @@
+<div class="reports-page">
+
+  <!-- HEADER -->
+  <div class="page-header">
+    <h2><i class="fa fa-bar-chart"></i> Sales Reports</h2>
+  </div>
+
+  <!-- FILTER SECTION -->
+  <div class="filter-section">
+    <div class="filter-row">
+      <div class="filter-group">
+        <label>From Date</label>
+        <input type="date" class="form-control" [(ngModel)]="fromDate" />
+      </div>
+      <div class="filter-group">
+        <label>To Date</label>
+        <input type="date" class="form-control" [(ngModel)]="toDate" />
+      </div>
+      <div class="filter-actions">
+        <button class="btn btn-primary" (click)="applyFilter()" [disabled]="filterLoading">
+          <i class="fa fa-filter"></i> Apply Filter
+        </button>
+        <button class="btn btn-outline-secondary" (click)="resetFilter()">
+          <i class="fa fa-refresh"></i> Reset
+        </button>
+      </div>
+    </div>
+    <div class="filter-error" *ngIf="filterError">
+      <i class="fa fa-exclamation-circle"></i> {{ filterError }}
+    </div>
+  </div>
+
+  <!-- FILTERED SUMMARY -->
+  <div class="summary-cards" *ngIf="filterApplied && filteredData">
+    <div class="card summary-card">
+      <div class="card-body text-center">
+        <h6>Filtered Sales</h6>
+        <h3 class="text-primary">₹{{ filteredData.totalSalesAmount | number:'1.0-0' }}</h3>
+        <small>{{ filteredData.totalInvoices }} invoices · {{ filteredData.totalQuantity }} qty</small>
+      </div>
+    </div>
+    <div class="card summary-card">
+      <div class="card-body text-center">
+        <h6>Total Invoices</h6>
+        <h3 class="text-success">{{ filteredData.totalInvoices }}</h3>
+        <small>{{ getFilterPeriod() }}</small>
+      </div>
+    </div>
+    <div class="card summary-card">
+      <div class="card-body text-center">
+        <h6>Total GST</h6>
+        <h3 class="text-purple">₹{{ filteredData.totalGst | number:'1.0-0' }}</h3>
+        <small>CGST + SGST</small>
+      </div>
+    </div>
+    <div class="card summary-card">
+      <div class="card-body text-center">
+        <h6>Total Qty Sold</h6>
+        <h3 class="text-warning">{{ filteredData.totalQuantity }}</h3>
+        <small>units</small>
+      </div>
+    </div>
+  </div>
+
+  <!-- DEFAULT SUMMARY CARDS (when no filter) -->
+  <div class="summary-cards" *ngIf="!filterApplied && daily && monthly">
+    <div class="card summary-card">
+      <div class="card-body text-center">
+        <h6>Today's Sales</h6>
+        <h3 class="text-primary">₹{{ daily.totalSalesAmount | number:'1.0-0' }}</h3>
+        <small>{{ daily.totalInvoices }} invoices · {{ daily.totalQuantity }} qty</small>
+      </div>
+    </div>
+    <div class="card summary-card">
+      <div class="card-body text-center">
+        <h6>This Week</h6>
+        <h3 class="text-success">₹{{ weekly?.totalSalesAmount | number:'1.0-0' }}</h3>
+        <small>{{ weekly?.totalInvoices }} invoices · {{ weekly?.totalQuantity }} qty</small>
+      </div>
+    </div>
+    <div class="card summary-card">
+      <div class="card-body text-center">
+        <h6>This Month</h6>
+        <h3 class="text-purple">₹{{ monthly?.currentMonth?.totalSalesAmount | number:'1.0-0' }}</h3>
+        <small>{{ monthly?.currentMonth?.totalInvoices }} invoices · {{ monthly?.currentMonth?.totalQuantity }} qty</small>
+      </div>
+    </div>
+    <div class="card summary-card" *ngIf="monthly">
+      <div class="card-body text-center">
+        <h6>Growth vs Prev Month</h6>
+        <h3 [class.text-success]="monthly.growthPercent >= 0" [class.text-danger]="monthly.growthPercent < 0">
+          {{ monthly.growthPercent >= 0 ? '+' : '' }}{{ monthly.growthPercent }}%
+        </h3>
+        <small>{{ monthly.currentMonth.label }}</small>
+      </div>
+    </div>
+  </div>
+
+  <!-- FILTERED DATA TABLE -->
+  <div class="table-card" *ngIf="filterApplied && filteredData">
+    <div class="table-header">
+      <h5><i class="fa fa-list"></i> Filtered Sales Records</h5>
+      <span class="badge">{{ filteredData.totalInvoices }} records</span>
+    </div>
+    <div class="table-body" *ngIf="filteredData.sales.length > 0">
+      <div class="table-responsive">
+        <table class="table table-hover">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Invoice No</th>
+              <th>Customer</th>
+              <th>Date</th>
+              <th>Items</th>
+              <th>Qty</th>
+              <th>Total</th>
+              <th>GST</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let sale of filteredData.sales; let i = index">
+              <td>{{ i + 1 }}</td>
+              <td>{{ sale.invoiceNo }}</td>
+              <td>{{ sale.customerName }}</td>
+              <td>{{ sale.invoiceDate | date:'dd/MM/yyyy' }}</td>
+              <td>{{ sale.items?.length || 0 }}</td>
+              <td>{{ getItemTotalQty(sale) }}</td>
+              <td>₹{{ sale.totalAmount | number:'1.0-0' }}</td>
+              <td>₹{{ sale.gst | number:'1.0-0' }}</td>
+              <td>
+                <span class="badge-status" [class.paid]="sale.paymentStatus === 'Paid'" [class.due]="sale.paymentStatus !== 'Paid'">
+                  {{ sale.paymentStatus }}
+                </span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="empty-state" *ngIf="filteredData.sales.length === 0">
+      <p>No sales data found for the selected date range.</p>
+    </div>
+  </div>
+
+  <!-- CHARTS ROW -->
+  <div class="charts-row">
+
+    <!-- DAILY / PRODUCT SALES -->
+    <div class="chart-card">
+      <div class="chart-header">
+        <h5><i class="fa fa-calendar-o"></i> {{ filterApplied ? 'Filtered' : 'Daily' }} Sales — Product-wise Qty</h5>
+        <span class="badge" *ngIf="filterApplied && filteredData">₹{{ filteredData.totalSalesAmount | number:'1.0-0' }}</span>
+        <span class="badge" *ngIf="!filterApplied && daily">₹{{ daily.totalSalesAmount | number:'1.0-0' }}</span>
+      </div>
+      <div class="chart-body">
+        <div class="loader" *ngIf="loading.daily || filterLoading">
+          <div class="spinner"></div>
+          <span>Loading...</span>
+        </div>
+        <div class="error-state" *ngIf="!loading.daily && error.daily && !filterApplied">
+          <p>Failed to load daily report.</p>
+          <button class="btn btn-sm btn-outline-primary" (click)="loadDaily()">Retry</button>
+        </div>
+        <div class="empty-state" *ngIf="!loading.daily && !filterApplied && daily?.totalInvoices === 0 && !filterApplied">
+          <p>No sales recorded today.</p>
+        </div>
+        <div class="empty-state" *ngIf="filterApplied && filteredData?.totalInvoices === 0">
+          <p>No sales data found for the selected date range.</p>
+        </div>
+        <div class="canvas-wrap"
+             *ngIf="(!filterApplied && !loading.daily && !error.daily && daily?.totalInvoices > 0) ||
+                    (filterApplied && !filterLoading && filteredData?.totalInvoices > 0)">
+          <canvas #dailyChart></canvas>
+        </div>
+      </div>
+    </div>
+
+    <!-- WEEKLY SALES -->
+    <div class="chart-card">
+      <div class="chart-header">
+        <h5><i class="fa fa-calendar"></i> {{ filterApplied ? 'Filtered Day-wise' : getWeeklyTitle() }}</h5>
+        <span class="badge" *ngIf="filterApplied && filteredData">₹{{ filteredData.totalSalesAmount | number:'1.0-0' }}</span>
+        <span class="badge" *ngIf="!filterApplied && weekly">₹{{ weekly.totalSalesAmount | number:'1.0-0' }}</span>
+      </div>
+      <div class="chart-period" *ngIf="!filterApplied && weekly">
+        <small>{{ getWeeklyPeriod() }}</small>
+      </div>
+      <div class="chart-body">
+        <div class="loader" *ngIf="loading.weekly || filterLoading">
+          <div class="spinner"></div>
+          <span>Loading...</span>
+        </div>
+        <div class="error-state" *ngIf="!loading.weekly && error.weekly && !filterApplied">
+          <p>Failed to load weekly report.</p>
+          <button class="btn btn-sm btn-outline-primary" (click)="loadWeekly()">Retry</button>
+        </div>
+        <div class="empty-state" *ngIf="!loading.weekly && !filterApplied && weekly?.totalInvoices === 0">
+          <p>No sales recorded this week.</p>
+        </div>
+        <div class="empty-state" *ngIf="filterApplied && filteredData?.totalInvoices === 0">
+          <p>No sales data found for the selected date range.</p>
+        </div>
+        <div class="canvas-wrap"
+             *ngIf="(!filterApplied && !loading.weekly && !error.weekly && weekly?.totalInvoices > 0) ||
+                    (filterApplied && !filterLoading && filteredData?.totalInvoices > 0)">
+          <canvas #weeklyChart></canvas>
+        </div>
+      </div>
+    </div>
+
+    <!-- MONTHLY SALES -->
+    <div class="chart-card chart-card-full">
+      <div class="chart-header">
+        <h5><i class="fa fa-line-chart"></i> {{ filterApplied ? 'Filtered Monthly' : getMonthlyTitle() }}</h5>
+        <span class="badge" *ngIf="filterApplied && filteredData">₹{{ filteredData.totalSalesAmount | number:'1.0-0' }}</span>
+        <span class="badge" *ngIf="!filterApplied && monthly">₹{{ monthly.currentMonth?.totalSalesAmount | number:'1.0-0' }}</span>
+      </div>
+      <div class="chart-period" *ngIf="!filterApplied && monthly">
+        <small>{{ getMonthlyPeriod() }}</small>
+      </div>
+      <div class="chart-body">
+        <div class="loader" *ngIf="loading.monthly || filterLoading">
+          <div class="spinner"></div>
+          <span>Loading...</span>
+        </div>
+        <div class="error-state" *ngIf="!loading.monthly && error.monthly && !filterApplied">
+          <p>Failed to load monthly report.</p>
+          <button class="btn btn-sm btn-outline-primary" (click)="loadMonthly()">Retry</button>
+        </div>
+        <div class="empty-state" *ngIf="!loading.monthly && !filterApplied && monthly?.monthlyTrend?.length === 0">
+          <p>No sales data available.</p>
+        </div>
+        <div class="empty-state" *ngIf="filterApplied && filteredData?.totalInvoices === 0">
+          <p>No sales data found for the selected date range.</p>
+        </div>
+        <div class="canvas-wrap"
+             *ngIf="(!filterApplied && !loading.monthly && !error.monthly && monthly?.monthlyTrend?.length > 0) ||
+                    (filterApplied && !filterLoading && filteredData?.totalInvoices > 0)">
+          <canvas #monthlyChart></canvas>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>

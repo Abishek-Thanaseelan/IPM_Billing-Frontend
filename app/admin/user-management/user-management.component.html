@@ -1,0 +1,40 @@
+<div class="user-page">
+  <div class="page-header">
+    <h2><i class="fa fa-users"></i> User Management</h2>
+  </div>
+
+  <div class="table-card">
+    <div class="table-header">
+      <h5><i class="fa fa-list"></i> All Users</h5>
+      <span class="badge">{{ users.length }} users</span>
+    </div>
+    <div class="table-body" *ngIf="!loading">
+      <table class="table table-hover">
+        <thead>
+          <tr><th>#</th><th>Name</th><th>Email</th><th>Mobile</th><th>Role</th><th>Status</th><th>Registered</th><th>Actions</th></tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let u of users; let i=index">
+            <td>{{i+1}}</td>
+            <td>{{u.name}}</td>
+            <td>{{u.email}}</td>
+            <td>{{u.mobile}}</td>
+            <td><span class="badge-status" [class.paid]="u.role==='Admin'" [class.due]="u.role!=='Admin'">{{u.role}}</span></td>
+            <td>
+              <span class="badge-status" [class.paid]="u.status==='approved'" [class.due]="u.status==='declined'" [class.pending]="u.status==='pending'">
+                {{u.status}}
+              </span>
+            </td>
+            <td>{{u.createdAt | date:'dd/MM/yyyy'}}</td>
+            <td>
+              <button class="btn btn-sm btn-success me-1" *ngIf="u.status==='pending'" (click)="approve(u._id)"><i class="fa fa-check"></i> Approve</button>
+              <button class="btn btn-sm btn-danger" *ngIf="u.status==='pending'" (click)="decline(u._id)"><i class="fa fa-times"></i> Decline</button>
+              <span class="text-muted small" *ngIf="u.status!=='pending'">—</span>
+            </td>
+          </tr>
+          <tr *ngIf="users.length === 0"><td colspan="8" class="text-center text-muted">No users found</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,59 @@
+<div class="dashboard-wrapper">
+  <div class="sidebar-overlay" *ngIf="isSidebarOpen" (click)="toggleSidebar()"></div>
+  <div class="sidebar p-0" [class.sidebar-expanded]="isSidebarOpen">
+    <div class="sidebar-header">
+      <button class="toggle-btn" (click)="toggleSidebar()"><i class="fa fa-bars"></i></button>
+      <div class="sidebar-brand">
+        <span class="sidebar-short">IP</span>
+        <span class="sidebar-title">IPMega</span>
+      </div>
+    </div>
+    <div class="menu">
+      <a routerLink="/dashboard" class="menu-item" routerLinkActive="active-menu" [routerLinkActiveOptions]="{exact:true}">
+        <i class="fa fa-dashboard"></i><span class="menu-label">Dashboard</span>
+      </a>
+      <a routerLink="/sales" class="menu-item" routerLinkActive="active-menu">
+        <i class="fa fa-shopping-cart"></i><span class="menu-label">Sales</span>
+      </a>
+      <a routerLink="/sales-return" class="menu-item" routerLinkActive="active-menu">
+        <i class="fa fa-undo"></i><span class="menu-label">Sales Return</span>
+      </a>
+      <a routerLink="/purchase" class="menu-item" routerLinkActive="active-menu">
+        <i class="fa fa-cart-plus"></i><span class="menu-label">Purchase</span>
+      </a>
+      <a routerLink="/purchase-return" class="menu-item" routerLinkActive="active-menu">
+        <i class="fa fa-reply"></i><span class="menu-label">Purchase Return</span>
+      </a>
+      <a routerLink="/delivery-challan" class="menu-item" routerLinkActive="active-menu">
+        <i class="fa fa-truck"></i><span class="menu-label">Delivery Challan</span>
+      </a>
+      <a href="https://ewaybillgst.gov.in/" target="_blank" rel="noopener noreferrer" class="menu-item">
+        <i class="fa fa-truck"></i><span class="menu-label">E-Way Bill</span>
+      </a>
+      <a routerLink="/stock-management" class="menu-item" routerLinkActive="active-menu">
+        <i class="fa fa-cubes"></i><span class="menu-label">Stock</span>
+      </a>
+      <a routerLink="/sales-report" class="menu-item" routerLinkActive="active-menu">
+        <i class="fa fa-file-text-o"></i><span class="menu-label">Sales Report</span>
+      </a>
+      <a routerLink="/stock-report" class="menu-item" routerLinkActive="active-menu">
+        <i class="fa fa-bar-chart"></i><span class="menu-label">Stock Report</span>
+      </a>
+      <a routerLink="/purchase-report" class="menu-item" routerLinkActive="active-menu">
+        <i class="fa fa-cart-arrow-down"></i><span class="menu-label">Purchase Report</span>
+      </a>
+    </div>
+    <div class="sidebar-footer">
+      <button class="menu-item logout-item" (click)="logout()">
+        <i class="fa fa-sign-out"></i><span class="menu-label">Logout</span>
+      </button>
+    </div>
+  </div>
+  <div class="dashboard-area" [class.dashboard-expanded]="isSidebarOpen">
+    <div class="top-bar" [class.top-bar-expanded]="isSidebarOpen">
+      <button class="mobile-toggle" (click)="toggleSidebar()"><i class="fa fa-bars"></i></button>
+      <span class="welcome-text">Welcome {{ userName }}</span>
+    </div>
+    <router-outlet></router-outlet>
+  </div>
+</div>

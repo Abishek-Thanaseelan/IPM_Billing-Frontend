@@ -1,0 +1,331 @@
+<!-- add-purchase.component.html -->
+
+<div class="purchase-page">
+
+  <!-- TOP HEADER -->
+
+  <div class="top-header">
+
+    <div class="company">
+      IPMEGA ENTERPRISES (IPMEGA-1)
+    </div>
+
+    <div class="header-right">
+
+      <span class="date">
+        22-05-2026 / 03:03 PM
+      </span>
+
+    </div>
+
+  </div>
+
+  <!-- PAGE TITLE -->
+
+  <div class="page-title-box">
+
+    <h2>Purchase</h2>
+
+    <p>
+      Dashboard /
+      <span>Purchase</span>
+    </p>
+
+  </div>
+
+  <!-- FORM SECTION -->
+
+  <div class="form-container">
+
+    <!-- FIRST ROW -->
+
+    <div class="form-row">
+
+      <div class="form-group">
+
+        <label>GST Type</label>
+
+        <select class="form-control">
+          <option>GST</option>
+        </select>
+
+      </div>
+
+      <div class="form-group">
+
+        <label>Party Type</label>
+
+        <select class="form-control">
+          <option>Wholesale</option>
+        </select>
+
+      </div>
+
+      <div class="form-group">
+
+        <label>GRN No</label>
+
+        <input
+          type="text"
+          class="form-control"
+          value="IPMB26E221001"
+        >
+
+      </div>
+
+      <div class="form-group">
+
+        <label>GRN Date</label>
+
+        <input
+          type="date"
+          class="form-control"
+        >
+
+      </div>
+
+      <div class="form-group">
+
+        <label>Stock Place</label>
+
+        <select class="form-control">
+          <option>IPMEGA-1</option>
+        </select>
+
+      </div>
+
+      <div class="form-group">
+
+        <label>Tax Type</label>
+
+        <select class="form-control">
+          <option>Local</option>
+        </select>
+
+      </div>
+
+    </div>
+
+    <!-- SECOND ROW -->
+
+    <div class="form-row">
+
+      <div class="form-group">
+
+        <label>Customer Name</label>
+
+        <input
+          type="text"
+          class="form-control"
+        >
+
+      </div>
+
+      <div class="form-group">
+
+        <label>Mobile No</label>
+
+        <input
+          type="text"
+          class="form-control"
+        >
+
+      </div>
+
+      <div class="form-group">
+
+        <label>GSTIN</label>
+
+        <input
+          type="text"
+          class="form-control"
+        >
+
+      </div>
+
+      <div class="form-group">
+
+        <label>Invoice No</label>
+
+        <input
+          type="text"
+          class="form-control"
+        >
+
+      </div>
+
+      <div class="form-group">
+
+        <label>Invoice Date</label>
+
+        <input
+          type="date"
+          class="form-control"
+        >
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+<!-- PRODUCT SECTION -->
+
+<div class="product-section">
+
+  <div class="form-row">
+
+    <div class="form-group">
+      <label>Product Name</label>
+
+      <select class="form-control" [(ngModel)]="selectedProductId" (change)="onProductSelect()">
+        <option value="">Select Product</option>
+        <option *ngFor="let p of activeProducts" [value]="p._id">{{ p.productName }} {{ p.productSize ? '- ' + p.productSize : '' }}</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label>Size Name</label>
+
+      <input
+        type="text"
+        class="form-control"
+        [value]="purchaseItem.size"
+        readonly>
+    </div>
+
+    <div class="form-group">
+      <label>Unit</label>
+
+      <input
+        type="text"
+        class="form-control"
+        [value]="purchaseItem.unit"
+        readonly>
+    </div>
+
+    <div class="form-group">
+      <label>Rate</label>
+
+      <input
+        type="number"
+        class="form-control"
+        [value]="purchaseItem.rate"
+        readonly>
+    </div>
+
+    <div class="form-group">
+      <label>Qty</label>
+
+      <input
+        type="number"
+        class="form-control"
+        [(ngModel)]="purchaseItem.qty">
+    </div>
+
+  </div>
+
+  <div class="form-row">
+
+    <div class="form-group">
+      <label>Disc %</label>
+
+      <input
+        type="number"
+        class="form-control"
+        [(ngModel)]="purchaseItem.discountPercent">
+    </div>
+
+    <div class="form-group">
+      <label>GST %</label>
+
+      <input
+        type="number"
+        class="form-control"
+        [value]="purchaseItem.gstPercent"
+        readonly>
+    </div>
+
+    <div class="button-group">
+
+      <button
+        class="insert-btn"
+        (click)="insertItem()">
+        Insert
+      </button>
+
+      <button
+        class="clear-btn"
+        (click)="clearForm()">
+        Clear
+      </button>
+
+    </div>
+
+  </div>
+
+</div>
+
+<!-- TABLE -->
+
+<div class="table-area">
+
+  <table class="table table-bordered text-center">
+
+    <thead class="table-primary">
+
+      <tr>
+
+        <th>#</th>
+        <th>Product Name</th>
+        <th>Size</th>
+        <th>Unit</th>
+        <th>Rate</th>
+        <th>Qty</th>
+        <th>Amount</th>
+        <th>Disc %</th>
+        <th>Discount</th>
+        <th>GST %</th>
+        <th>GST Amt</th>
+        <th>N.RATE</th>
+        <th>NET AMT</th>
+
+      </tr>
+
+    </thead>
+
+    <tbody>
+
+      <tr *ngFor="let item of purchaseList; let i = index">
+
+        <td>{{ i + 1 }}</td>
+        <td>{{ item.productName }}</td>
+        <td>{{ item.size }}</td>
+        <td>{{ item.unit }}</td>
+        <td>{{ item.rate }}</td>
+        <td>{{ item.qty }}</td>
+        <td>{{ item.amount }}</td>
+        <td>{{ item.discountPercent }}%</td>
+        <td>{{ item.discount }}</td>
+        <td>{{ item.gstPercent }}%</td>
+        <td>{{ item.gstAmount }}</td>
+        <td>{{ item.netRate | number:'1.2-2' }}</td>
+        <td>{{ item.netAmount | number:'1.2-2' }}</td>
+
+      </tr>
+
+      <tr *ngIf="purchaseList.length === 0">
+
+        <td colspan="13" class="text-center text-muted">
+          No Products Added
+        </td>
+
+      </tr>
+
+    </tbody>
+
+  </table>
+
+</div>
+

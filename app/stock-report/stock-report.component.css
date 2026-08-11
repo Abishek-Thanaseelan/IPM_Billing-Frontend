@@ -1,0 +1,163 @@
+.container-fluid {
+  padding: 20px;
+  background-color: #f8f9fa;
+  min-height: 100vh;
+}
+
+.report-header-card {
+  background: white;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.header-top {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.back-btn {
+  background: #6c757d;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.back-btn:hover {
+  background: #5a6268;
+}
+
+.page-title {
+  font-size: 22px;
+  font-weight: 700;
+  color: #1e293b;
+  margin: 0;
+}
+
+.form-label {
+  font-weight: 600;
+  color: #475569;
+  font-size: 13px;
+}
+
+.form-control {
+  border-radius: 8px;
+  border: 1px solid #cbd5e1;
+  padding: 8px 12px;
+  font-size: 14px;
+}
+
+.form-control:focus {
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+}
+
+.summary-box {
+  background: #f1f5f9;
+  border-radius: 10px;
+  padding: 12px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.summary-box .label {
+  font-size: 12px;
+  color: #64748b;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.summary-box .value {
+  font-size: 20px;
+  font-weight: 700;
+  color: #1e293b;
+}
+
+.card {
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.table thead th {
+  background: #2563eb;
+  color: white;
+  font-weight: 600;
+  font-size: 13px;
+  white-space: nowrap;
+}
+
+.table-bordered th,
+.table-bordered td {
+  border: 1px solid #dee2e6;
+  font-size: 13px;
+  vertical-align: middle;
+}
+
+.table tbody tr:hover {
+  background-color: #e8f0fe;
+}
+
+.sortable {
+  cursor: pointer;
+  user-select: none;
+}
+
+.sortable:hover {
+  background: #1d4ed8;
+}
+
+.text-danger {
+  color: #dc3545 !important;
+}
+
+.text-success {
+  color: #28a745 !important;
+}
+
+.btn-outline-primary,
+.btn-outline-danger,
+.btn-outline-success {
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.btn-primary,
+.btn-secondary {
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.pagination .page-link {
+  border-radius: 6px;
+  margin: 0 2px;
+  font-size: 13px;
+  color: #2563eb;
+  cursor: pointer;
+}
+
+.pagination .page-item.active .page-link {
+  background-color: #2563eb;
+  border-color: #2563eb;
+  color: white;
+}
+
+@media print {
+  .back-btn,
+  .btn-outline-primary,
+  .btn-outline-danger,
+  .btn-outline-success,
+  .pagination {
+    display: none !important;
+  }
+
+  .container-fluid {
+    padding: 10px;
+  }
+}

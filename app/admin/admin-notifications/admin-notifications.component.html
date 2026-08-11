@@ -1,0 +1,26 @@
+<div class="notif-page">
+  <div class="page-header">
+    <h2><i class="fa fa-bell"></i> Notifications</h2>
+  </div>
+  <div class="notif-grid" *ngIf="!loading">
+    <div class="notif-card">
+      <div class="notif-icon bg-warning"><i class="fa fa-user-plus"></i></div>
+      <div class="notif-info">
+        <h5>Pending Approvals</h5>
+        <h3>{{ notifications.pendingApprovals }}</h3>
+        <small>Salesperson registrations awaiting review</small>
+      </div>
+    </div>
+    <div class="notif-card">
+      <div class="notif-icon bg-success"><i class="fa fa-shopping-cart"></i></div>
+      <div class="notif-info">
+        <h5>Today's Sales</h5>
+        <h3>{{ notifications.todaySales }}</h3>
+        <small>invoices created today</small>
+      </div>
+    </div>
+  </div>
+  <div class="empty-state" *ngIf="!loading && notifications.pendingApprovals === 0 && notifications.todaySales === 0">
+    <p>No notifications at this time.</p>
+  </div>
+</div>

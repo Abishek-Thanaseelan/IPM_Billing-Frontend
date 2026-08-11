@@ -1,0 +1,92 @@
+<div class="admin-dashboard">
+  <div class="page-header">
+    <h2><i class="fa fa-dashboard"></i> Admin Dashboard</h2>
+  </div>
+
+  <div class="stats-grid">
+    <div class="stat-card">
+      <div class="stat-icon bg-primary"><i class="fa fa-shopping-cart"></i></div>
+      <div class="stat-info">
+        <h5>Total Sales</h5>
+        <h3>₹{{ stats.totalSales | number:'1.0-0' }}</h3>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon bg-success"><i class="fa fa-cart-plus"></i></div>
+      <div class="stat-info">
+        <h5>Total Purchase</h5>
+        <h3>₹{{ stats.totalPurchase | number:'1.0-0' }}</h3>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon bg-purple"><i class="fa fa-line-chart"></i></div>
+      <div class="stat-info">
+        <h5>Total Profit</h5>
+        <h3>₹{{ profit.totalProfit | number:'1.0-0' }}</h3>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon bg-warning"><i class="fa fa-file-text"></i></div>
+      <div class="stat-info">
+        <h5>Total Invoices</h5>
+        <h3>{{ stats.totalInvoices }}</h3>
+      </div>
+    </div>
+  </div>
+
+  <div class="profit-grid">
+    <div class="profit-card">
+      <h6>Daily Profit</h6>
+      <h4>₹{{ profit.dailyProfit | number:'1.0-0' }}</h4>
+    </div>
+    <div class="profit-card">
+      <h6>Weekly Profit</h6>
+      <h4>₹{{ profit.weeklyProfit | number:'1.0-0' }}</h4>
+    </div>
+    <div class="profit-card">
+      <h6>Monthly Profit</h6>
+      <h4>₹{{ profit.monthlyProfit | number:'1.0-0' }}</h4>
+    </div>
+    <div class="profit-card">
+      <h6>Total Products</h6>
+      <h4>{{ stats.totalProducts }}</h4>
+    </div>
+  </div>
+
+  <div class="table-card">
+    <div class="table-header">
+      <h5><i class="fa fa-clock-o"></i> Recent Transactions</h5>
+    </div>
+    <div class="table-body" *ngIf="stats.recentTransactions?.length; else noTransactions">
+      <table class="table table-hover">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Invoice</th>
+            <th>Customer</th>
+            <th>Date &amp; Time</th>
+            <th>Total Amount</th>
+            <th>Payment Method</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let t of stats.recentTransactions; let i=index">
+            <td>{{i+1}}</td>
+            <td>{{t.invoiceNo}}</td>
+            <td>{{t.customerName}}</td>
+            <td>{{t.invoiceDate | date:'dd/MM/yyyy hh:mm a'}}</td>
+            <td>₹{{t.totalAmount | number:'1.0-0'}}</td>
+            <td>{{t.paymentMethod || '-'}}</td>
+            <td><span class="badge-status paid">{{t.paymentStatus}}</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <ng-template #noTransactions>
+      <div class="table-body">
+        <p class="text-muted text-center py-3 mb-0">No recent paid transactions found.</p>
+      </div>
+    </ng-template>
+  </div>
+</div>

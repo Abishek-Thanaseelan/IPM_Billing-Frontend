@@ -1,0 +1,195 @@
+<div id="print-section" class="invoice-container">
+  <!-- TOP HEADER -->
+  <div class="top-header">
+    <!-- LEFT -->
+    <div class="login-header">
+      <div class="header">
+        <!-- LOGO -->
+        <div class="logo-box">
+          <div class="logo-box">
+            <img src="./assets/icon.png" alt="Logo" />
+          </div>
+        </div>
+
+        <!-- COMPANY NAME -->
+        <div class="company-title">
+          <h1>IPMEGA ENTERPRISES</h1>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT -->
+    <div class="company-details">
+      <p>
+        <b>Address :</b>
+        {{ companyAddress }}
+      </p>
+
+      <p>
+        <b>GSTIN :</b>
+        {{ companyGST }}
+      </p>
+
+      <p>
+        <b>State :</b>
+        {{ customerState }}
+      </p>
+
+      <p>
+        <b>Phone :</b>
+        {{ companyPhone }}
+      </p>
+
+      <p>
+        <b>Email :</b>
+        {{ companyEmail }}
+      </p>
+    </div>
+  </div>
+
+  <!-- TITLE -->
+  <div class="invoice-title">
+    <h2>Tax Invoice</h2>
+  </div>
+
+  <!-- CUSTOMER + BILL -->
+  <div class="details-row">
+    <!-- CUSTOMER -->
+    <div class="customer-box">
+      <h3>Bill To</h3>
+
+      <p>
+        <b>Name :</b>
+        {{ customerName }}
+      </p>
+
+      <p>
+        <b>Phone :</b>
+        {{ customerPhone }}
+      </p>
+
+      <p>
+        <b>GSTIN :</b>
+        {{ customerGST }}
+      </p>
+
+      <p>
+        <b>State :</b>
+        {{ customerState }}
+      </p>
+    </div>
+
+    <!-- BILL -->
+    <div class="bill-box">
+      <p>
+        <b>Bill No :</b>
+        {{ billNo }}
+      </p>
+
+      <p>
+        <b>Bill Date :</b>
+        {{ billDate | date: "dd/MM/yyyy" }}
+      </p>
+
+      <p>
+        <b>Sales Person :</b>
+        {{ salesPerson }}
+      </p>
+    </div>
+  </div>
+
+  <!-- TABLE -->
+  <table class="invoice-table">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Product Name</th>
+        <th>Size</th>
+        <th>Qty</th>
+        <th>Taxable Value</th>
+        <th>GST %</th>
+        <th>GST Amount</th>
+        <th>Rate</th>
+        <th>Total</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr *ngFor="let item of localSalesList; let i = index">
+        <td>{{ i + 1 }}</td>
+        <td>{{ item.productName || '-' }}</td>
+        <td>{{ item.productSize || '-' }}</td>
+        <td>{{ item.qty || 0 }}</td>
+        <td>{{ (item.taxableRate * item.qty) | number:'1.2-2' }}</td>
+        <td>{{ item.gstPercent || 0 }}%</td>
+        <td>{{ item.gstAmount | number:'1.2-2' }}</td>
+        <td>{{ item.rate | number:'1.2-2' }}</td>
+        <td>{{ item.netAmount | number:'1.2-2' }}</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- BOTTOM -->
+  <div class="bottom-section">
+    <!-- LEFT -->
+    <div class="description-box">
+      <h4><b>Bank Details</b></h4>
+
+      <p><b>Account No :</b> 185539976786607</p>
+
+      <p><b>IFSC Code :</b> TMPL000185</p>
+
+      <br />
+
+      <h4>Invoice Amount In Words</h4>
+
+      <p>
+        <b>Rupees {{ convertNumberToWords(getTotalAmount()) }} Only</b>
+      </p>
+
+      <br />
+
+      <h4><b>Terms & Conditions</b></h4>
+
+      <div class="thank-you">THANK YOU FOR DOING BUSINESS WITH US!</div>
+    </div>
+
+    <!-- RIGHT -->
+    <div class="total-section">
+      <table class="total-table">
+        <tr>
+          <th>Total Taxable Value</th>
+          <td>₹ {{ getTotalTaxableAmount() | number:'1.2-2' }}</td>
+        </tr>
+
+        <tr>
+          <th>Total GST</th>
+          <td>₹ {{ getTotalGstAmount() | number:'1.2-2' }}</td>
+        </tr>
+
+        <tr>
+          <th>Grand Total</th>
+          <td>₹ {{ getTotalAmount() | number:'1.2-2' }}</td>
+        </tr>
+
+        <tr>
+          <th>Received</th>
+          <td>₹ {{ receivedAmount }}</td>
+        </tr>
+
+        <tr>
+          <th>Balance</th>
+          <td>₹ {{ balanceAmount }}</td>
+        </tr>
+      </table>
+
+      <div class="signature-box">
+        <h4>For : {{ companyName }}</h4>
+
+        <br /><br /><br />
+
+        <p>Authorized Signature</p>
+      </div>
+    </div>
+  </div>
+</div>

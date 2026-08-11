@@ -1,0 +1,227 @@
+/* You can add global styles to this file, and also import other style files */
+
+/* Existing styles */
+
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+}
+
+/* Paste TOASTER CSS BELOW */
+
+/* TOAST POSITION FIX */
+
+.toast-container {
+
+  top: 20px !important;
+  right: 20px !important;
+
+}
+
+.ngx-toastr {
+
+  border-radius: 10px !important;
+  padding: 15px 20px !important;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.2) !important;
+  font-size: 14px !important;
+
+}
+
+/* SUCCESS */
+.toast-success {
+  background: #28a745 !important;
+  color: #fff !important;
+}
+
+.toast-error {
+  background: #dc3545 !important;
+  color: #fff !important;
+}
+
+.toast-warning {
+  background: #ff9800 !important;
+  color: #fff !important;
+}
+
+.toast-info {
+  background: #17a2b8 !important;
+  color: #fff !important;
+}
+
+.toast-title,
+.toast-message {
+  color: #fff !important;
+}
+
+/* =========================
+   ANGULAR MATERIAL AUTOCOMPLETE (compact, matches Bootstrap form)
+========================= */
+
+.compact-autocomplete.mat-mdc-form-field {
+  width: 100%;
+  font-size: 14px;
+}
+
+.compact-autocomplete .mat-mdc-form-field-subscript-wrapper {
+  display: none;
+}
+
+.compact-autocomplete .mat-mdc-text-field-wrapper.mdc-text-field--outlined {
+  height: 40px;
+}
+
+.compact-autocomplete .mat-mdc-form-field-infix {
+  padding-top: 6px;
+  padding-bottom: 6px;
+  min-height: 40px;
+}
+
+.compact-autocomplete .mdc-notched-outline__notch {
+  border-right: none;
+}
+
+.compact-autocomplete .mat-mdc-form-field-infix {
+  display: flex;
+  align-items: center;
+}
+
+.compact-autocomplete .mat-mdc-form-field-infix input {
+  height: 28px;
+}
+
+.compact-autocomplete .mat-mdc-icon-button {
+  width: 30px;
+  height: 30px;
+  line-height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.compact-autocomplete .mat-mdc-icon-button .fa {
+  font-size: 12px;
+  color: #888;
+}
+
+.compact-autocomplete mat-spinner {
+  margin-right: 4px;
+}
+
+.mat-mdc-autocomplete-panel .ac-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.mat-mdc-autocomplete-panel .ac-name {
+  font-weight: 600;
+  color: #212529;
+}
+
+.mat-mdc-autocomplete-panel .ac-detail {
+  color: #6c757d;
+  font-size: 12px;
+}
+
+.mat-mdc-autocomplete-panel .ac-empty {
+  color: #6c757d;
+  font-style: italic;
+  font-size: 13px;
+  pointer-events: none;
+}
+
+.ac-add-new {
+  margin-top: 6px;
+  font-size: 13px;
+  color: #0d3b66;
+}
+
+.ac-add-new a {
+  font-weight: 700;
+  text-decoration: underline;
+  cursor: pointer;
+  color: #0d6efd;
+}
+
+/* Add New Contact modal (shared style) */
+.contact-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 99999;
+}
+
+.contact-modal-box {
+  width: 480px;
+  max-width: 95%;
+  background: #fff;
+  padding: 24px;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  animation: popupShow 0.25s ease;
+}
+
+.contact-modal-box h3 {
+  color: #0d3b66;
+  font-size: 22px;
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+
+.contact-modal-box hr {
+  border: none;
+  height: 2px;
+  background: #ffc107;
+  margin-bottom: 18px;
+}
+
+.contact-modal-box label {
+  font-weight: 600;
+  color: #0d3b66;
+  margin-bottom: 5px;
+  display: block;
+  font-size: 14px;
+}
+
+.contact-modal-box .form-control {
+  height: 42px;
+  border-radius: 8px;
+  border: 1px solid #ced4da;
+  font-size: 14px;
+}
+
+.contact-modal-box .modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 22px;
+}
+
+.contact-modal-box .btn {
+  min-width: 110px;
+  border-radius: 8px;
+  font-weight: 600;
+}
+
+.contact-modal-box .btn-primary {
+  background: #0d3b66;
+  border: none;
+}
+
+.contact-modal-box .btn-primary:hover {
+  background: #082a4a;
+}
+
+.contact-modal-box .btn-secondary {
+  background: #ffc107;
+  border: none;
+  color: #000;
+}
+
+.contact-modal-box .btn-secondary:hover {
+  background: #e0a800;
+}

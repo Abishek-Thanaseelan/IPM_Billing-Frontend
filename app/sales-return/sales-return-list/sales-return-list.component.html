@@ -1,0 +1,331 @@
+<div class="container-fluid mt-3">
+  <div class="card shadow border-0">
+    <!-- HEADER -->
+
+    <div class="card-header bg-danger text-white">
+      <button class="home-btn" (click)="goDashboard()">
+        <i class="fa fa-home me-1"></i> Home
+      </button>
+
+
+      <h4 class="mb-0">Sales Return</h4>
+
+      <div class="header-right">
+        <span class="date">
+          {{ currentDate | date: "dd-MM-yyyy / hh:mm a" }}
+        </span>
+      </div>
+    </div>
+
+    <button class="floating-home" (click)="goDashboard()">
+      <i class="fa fa-home"></i>
+    </button>
+
+    <div class="card-body">
+      <!-- TOP DETAILS -->
+
+    <div class="row search-section align-items-end g-3">
+
+  <!-- SEARCH LABEL -->
+  <div class="col-12 col-md-2">
+    <label class="fw-bold">Search</label>
+
+    <input
+      type="text"
+      class="form-control mt-1"
+      [(ngModel)]="searchText"
+      placeholder="Invoice / Customer / Mobile"
+    />
+  </div>
+
+  <!-- SEARCH BUTTON -->
+  <div class="col-12 col-md-1 d-grid">
+    <button class="btn btn-primary" (click)="searchInvoice()">
+      Search
+    </button>
+  </div>
+
+  <!-- INVOICE DATE -->
+  <div class="col-12 col-md-2">
+    <label class="fw-bold">Invoice Date</label>
+    <input
+      type="text"
+      class="form-control mt-1"
+      [(ngModel)]="invoiceDate"
+      readonly
+    />
+  </div>
+
+  <!-- CUSTOMER NAME -->
+  <div class="col-12 col-md-2">
+    <label class="fw-bold">Customer Name</label>
+    <input
+      type="text"
+      class="form-control mt-1"
+      [(ngModel)]="customerName"
+      readonly
+    />
+  </div>
+
+  <!-- MOBILE -->
+  <div class="col-12 col-md-2">
+    <label class="fw-bold">Mobile No</label>
+    <input
+      type="text"
+      class="form-control mt-1"
+      [(ngModel)]="mobileNo"
+      readonly
+    />
+  </div>
+
+</div>
+
+<!-- SECOND ROW -->
+
+      <div class="row">
+        <!-- INVOICE NO -->
+
+        <div class="col-md-2 mb-3">
+          <label class="fw-bold"> Invoice No </label>
+
+          <input
+            type="text"
+            class="form-control"
+            [(ngModel)]="invoiceNo"
+            readonly
+          />
+        </div>
+
+        <!-- GSTIN -->
+
+        <div class="col-md-2 mb-3">
+          <label class="fw-bold"> GSTIN </label>
+
+          <input
+            type="text"
+            class="form-control"
+            [(ngModel)]="gstin"
+            readonly
+          />
+        </div>
+
+        <!-- MORE RETURN -->
+
+        <!-- <div class="col-md-3 d-flex align-items-end mb-3">
+          <button class="btn btn-warning w-100 fw-bold" (click)="moreReturn()">
+            More Return
+          </button>
+        </div> -->
+      </div>
+
+      <!-- TABLE -->
+
+      <div class="table-responsive mt-4">
+        <table
+          class="table table-bordered table-hover align-middle text-center"
+        >
+          <thead class="table-warning">
+            <tr>
+              <th>S.No</th>
+              <th>Product</th>
+              <th>Size</th>
+              <th>Unit</th>
+              <th>Rate</th>
+              <th>Sold Qty</th>
+              <th width="150">Return Qty</th>
+              <th>Amount</th>
+              <th>GST %</th>
+              <th>Total</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <!-- EMPTY -->
+
+            <tr *ngIf="returnList.length === 0">
+              <td colspan="11" class="text-center text-danger fw-bold">
+                No Products Found
+              </td>
+            </tr>
+
+            <!-- DATA -->
+
+            <tr *ngFor="let item of returnList; let i = index">
+              <td>{{ i + 1 }}</td>
+
+              <td class="text-start">
+                {{ item.productName }}
+              </td>
+
+              <td>
+                {{ item.size }}
+              </td>
+
+              <td>
+                {{ item.unit }}
+              </td>
+
+              <td>
+                {{ item.rate }}
+              </td>
+
+              <td class="fw-bold text-primary">
+                {{ item.soldQty }}
+              </td>
+
+              <!-- RETURN QTY -->
+
+              <td>
+                <input
+                  type="number"
+                  class="form-control text-center"
+                  [(ngModel)]="item.returnQty"
+                  (input)="calculateTotal(item)"
+                  [min]="0"
+                  [max]="item.soldQty"
+                />
+              </td>
+
+              <!-- AMOUNT -->
+
+              <td>
+                {{ item.amount | number: "1.2-2" }}
+              </td>
+
+              <!-- GST -->
+
+              <td>{{ item.gst }}%</td>
+
+              <!-- TOTAL -->
+
+              <td class="fw-bold text-success">
+                {{ item.total | number: "1.2-2" }}
+              </td>
+              <td>
+  <!-- <button
+    class="btn btn-warning btn-sm me-2"
+    (click)="editReturn(item)"
+  >
+    Edit
+  </button> -->
+
+  <button
+    class="btn btn-danger btn-sm"
+    (click)="deleteReturn(item)"
+  >
+    Delete
+  </button>
+</td> 
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- BOTTOM -->
+
+   <div class="row mt-4">
+
+  <!-- SALES DETAILS -->
+
+  <div class="col-md-6 mb-3">
+    <div class="card border-primary shadow-sm">
+      <div class="card-header bg-primary text-white fw-bold">
+        Sales Details
+      </div>
+
+      <div class="card-body">
+
+        <div class="mb-2">
+          <label class="fw-bold">Sales Total Amount</label>
+          <input
+            type="text"
+            class="form-control"
+            [value]="totalAmount | number:'1.2-2'"
+            readonly
+          />
+        </div>
+
+        <div class="mb-2">
+          <label class="fw-bold">Sales Paid Amount</label>
+          <input
+            type="text"
+            class="form-control"
+            [value]="paidAmount | number:'1.2-2'"
+            readonly
+          />
+        </div>
+
+        <div>
+          <label class="fw-bold text-danger">Sales Balance</label>
+          <input
+            type="text"
+            class="form-control fw-bold text-danger"
+            [value]="balanceAmount | number:'1.2-2'"
+            readonly
+          />
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- RETURN DETAILS -->
+<div class="col-md-6 mb-3">
+    <div class="card border-warning shadow-sm">
+      <div class="card-header bg-warning fw-bold">
+        Return Details
+      </div>
+
+      <div class="card-body">
+
+        <div class="mb-2">
+          <label class="fw-bold">Return Amount</label>
+          <input
+            type="text"
+            class="form-control"
+            [value]="getGrandTotal() | number:'1.2-2'"
+            readonly
+          />
+        </div>
+
+        <div class="mb-2">
+          <label class="fw-bold">Refund Paid</label>
+          <input
+            type="number"
+            class="form-control"
+            [(ngModel)]="refundPaid"
+          />
+        </div>
+
+        <div>
+          <label class="fw-bold text-danger">Refund Balance</label>
+          <input
+            type="text"
+            class="form-control fw-bold text-danger"
+            [value]="(getGrandTotal() - refundPaid) | number:'1.2-2'"
+            readonly
+          />
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- SAVE BUTTON -->
+
+ <div class="row mt-4">
+  <div class="col-12 text-center">
+    <button
+      class="btn btn-success save-btn"
+      (click)="saveReturn()"
+    >
+      Save Return
+    </button>
+  </div>
+</div>
+
+</div>
+    </div>
+  </div>
+</div>

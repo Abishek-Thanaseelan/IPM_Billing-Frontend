@@ -1,0 +1,372 @@
+<div class="container-fluid mt-3">
+  <div class="card shadow border-0 rounded-4">
+    <!-- Header -->
+
+    <div class="card-header bg-primary text-white rounded-top-4 py-3">
+      <button class="home-btn" (click)="goDashboard()">
+        <i class="fa fa-home me-1"></i> Home
+      </button>
+
+      <button class="floating-home" (click)="goDashboard()">
+        <i class="fa fa-home"></i>
+      </button>
+      <h4 style="text-align: center" class="mb-0 fw-bold">Purchase Return</h4>
+      <span class="date">
+        {{ currentDate | date: "dd-MM-yyyy / hh:mm a" }}
+      </span>
+    </div>
+
+    <div class="card-body">
+      <div class="row g-3">
+        <!-- GST TYPE -->
+
+        <!-- <div class="col-lg-2 col-md-4">
+          <label class="form-label fw-semibold">GST Type</label>
+          <select class="form-select shadow-sm" [(ngModel)]="gstType">
+            <option value="GST">GST</option>
+            <option value="NON-GST">NON-GST</option>
+          </select>
+        </div> -->
+
+        <!-- PARTY TYPE -->
+
+        <!-- <div class="col-lg-2 col-md-4">
+          <label class="form-label fw-semibold">Party Type</label>
+          <select class="form-select shadow-sm" [(ngModel)]="partyType">
+            <option value="Retailer">Retailer</option>
+            <option value="Wholesale">Wholesale</option>
+          </select>
+        </div> -->
+
+        <!-- HSN SAC -->
+
+        <div class="col-lg-2 col-md-4">
+          <label class="form-label fw-semibold">HSN / SAC</label>
+          <input
+            class="form-control"
+            [(ngModel)]="purchaseData.hsnSac"
+            readonly
+          />
+        </div>
+
+        <!-- RETURN DATE -->
+
+        <div class="col-lg-2 col-md-4">
+          <label class="form-label fw-semibold">Return Date</label>
+
+          <input
+            type="date"
+            class="form-control shadow-sm"
+            [(ngModel)]="returnDate"
+          />
+        </div>
+
+        <!-- TAX TYPE -->
+        <!-- 
+        <div class="col-lg-2 col-md-4">
+          <label class="form-label fw-semibold">Tax Type</label>
+
+          <select class="form-select shadow-sm">
+            <option>Local</option>
+          </select>
+        </div> -->
+
+        <!-- STOCK PLACE -->
+
+        <div class="col-lg-2 col-md-4">
+          <label class="form-label fw-semibold">Stock Place</label>
+
+          <input
+            type="text"
+            class="form-control shadow-sm"
+            value="IPMEGA-1"
+            readonly
+          />
+        </div>
+      </div>
+
+      <!-- SEARCH SECTION -->
+
+      <div class="row g-3 mt-2">
+        <!-- SEARCH -->
+
+        <div class="col-lg-3 col-md-6">
+          <label class="form-label fw-semibold"> Search </label>
+
+          <input
+            type="text"
+            class="form-control"
+            [(ngModel)]="searchText"
+            placeholder="Invoice No / Supplier Name / Mobile No"
+          />
+        </div>
+
+        <!-- SUPPLIER -->
+
+        <div class="col-lg-3 col-md-6">
+          <label class="form-label fw-semibold"> Supplier Name </label>
+
+          <input
+            class="form-control"
+            [(ngModel)]="purchaseData.supplierName"
+            readonly
+          />
+        </div>
+
+        <!-- MOBILE -->
+
+        <div class="col-lg-2 col-md-6">
+          <label class="form-label fw-semibold"> Mobile No </label>
+
+          <input
+            class="form-control"
+            [(ngModel)]="purchaseData.mobileNo"
+            readonly
+          />
+        </div>
+
+        <!-- GSTIN -->
+
+        <div class="col-lg-2 col-md-6">
+          <label class="form-label fw-semibold"> GSTIN </label>
+
+          <input
+            type="text"
+            class="form-control"
+            [(ngModel)]="gstin"
+            readonly
+          />
+        </div>
+
+        <!-- INVOICE -->
+
+        <div class="col-lg-2 col-md-6">
+          <label class="form-label fw-semibold"> Invoice No </label>
+
+          <input
+            class="form-control"
+            [(ngModel)]="purchaseData.invoiceNo"
+            readonly
+          />
+        </div>
+      </div>
+
+      <!-- SEARCH BUTTON -->
+
+      <div class="row mt-3">
+        <div class="col-md-2">
+          <button class="btn btn-primary w-100" (click)="searchPurchase()">
+            Search
+          </button>
+        </div>
+      </div>
+      <!-- Product Entry -->
+
+      <!-- <div class="table-responsive mt-3" *ngIf="productList.length > 0">
+
+  <table class="table table-bordered text-center">
+
+    <thead class="table-dark">
+
+      <tr>
+        <th>S.No</th>
+        <th>Product Name</th>
+        <th>Size</th>
+        <th>Unit</th>
+        <th>Rate</th>
+        <th>Qty</th>
+        <th>GST %</th>
+        <th>Amount</th>
+      </tr>
+
+    </thead>
+
+    <tbody>
+
+      <tr *ngFor="let item of productList; let i = index">
+
+        <td>{{ i + 1 }}</td>
+        <td>{{ item.productName }}</td>
+       <td>{{ item.productSize }}</td>
+        <td>{{ item.unit }}</td>
+        <td>{{ item.rate }}</td>
+        <td>{{ item.qty }}</td>
+       <td>{{ item.gstPercent }}</td>
+       <td>{{ item.gstAmount }}</td>
+
+      </tr>
+
+    </tbody>
+
+  </table>
+
+</div> -->
+
+      <!-- Product Card List -->
+
+      <div class="table-responsive mt-4" *ngIf="productList.length > 0">
+        <table class="table table-bordered text-center align-middle">
+          <thead class="table-dark">
+            <tr>
+              <th>S.No</th>
+              <th>Product</th>
+              <th>Size</th>
+              <th>Unit</th>
+              <th>Rate</th>
+              <th>Qty</th>
+              <th>Amount</th>
+              <th>GST</th>
+              <th>GST Amount</th>
+              <th>Total</th>
+              <th>Return Qty</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr *ngFor="let item of productList; let i = index">
+              <td>{{ i + 1 }}</td>
+
+              <td>{{ item.productName }}</td>
+
+              <td>{{ item.productSize }}</td>
+
+              <td>{{ item.unit }}</td>
+
+              <td>{{ item.rate }}</td>
+
+              <td>{{ item.qty }}</td>
+
+              <td>{{ item.amount }}</td>
+
+              <td>{{ item.gstPercent }}</td>
+
+              <td>{{ item.gstAmount }}</td>
+
+              <td class="fw-bold text-success">
+                {{ item.total || item.amount + item.gstAmount }}
+              </td>
+
+              <!-- RETURN QTY INPUT -->
+              <td>
+                <input
+                  type="number"
+                  class="form-control form-control-sm"
+                  [(ngModel)]="item.returnQty"
+                  [max]="item.qty"
+                  min="0"
+                  (input)="calcRow(item)"
+                />
+              </td>
+
+              <td>
+                <button
+                  class="btn btn-danger btn-sm"
+                  (click)="deleteProduct(i)"
+                >
+                  Delete
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <!-- Bottom Summary -->
+
+      <!-- PURCHASE PAYMENT DETAILS -->
+      <div class="row g-4 mt-4">
+        <!-- LEFT SIDE: PURCHASE PAYMENT -->
+        <div class="col-lg-6 col-md-12">
+          <div class="card border-0 shadow-sm rounded-4 h-100">
+            <div class="card-header bg-primary text-white">
+              <h6 class="mb-0">Purchase Payment Details</h6>
+            </div>
+
+            <div class="card-body">
+              <div class="row g-3">
+                <div class="col-12">
+                  <label class="form-label fw-semibold">Purchase Amount</label>
+                  <input
+                    class="form-control"
+                    [value]="purchaseAmount"
+                    readonly
+                  />
+                </div>
+
+                <div class="col-12">
+                  <label class="form-label fw-semibold">Paid Amount</label>
+                  <input
+                    class="form-control"
+                    [value]="purchasePaidAmount"
+                    readonly
+                  />
+                </div>
+
+                <div class="col-12">
+                  <label class="form-label fw-semibold">Balance Amount</label>
+                  <input
+                    class="form-control"
+                    [value]="purchaseBalance"
+                    readonly
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- RIGHT SIDE: REFUND DETAILS -->
+        <div class="col-lg-6 col-md-12">
+          <div class="card border-0 shadow-sm rounded-4 h-100">
+            <div class="card-header bg-danger text-white">
+              <h6 class="mb-0">Purchase Return Refund Details</h6>
+            </div>
+
+            <div class="card-body">
+              <div class="row g-3">
+                <div class="col-12">
+                  <label class="form-label fw-semibold">Refund Amount</label>
+                  <input
+                    class="form-control"
+                    [value]="refundTotalAmount"
+                    readonly
+                  />
+                </div>
+
+                <div class="col-12">
+                  <label class="form-label fw-semibold"
+                    >Received Refund Amount</label
+                  >
+                  <input
+                    type="number"
+                    class="form-control"
+                    [(ngModel)]="receivedRefundAmount"
+                    (input)="calculateRefundBalance()"
+                  />
+                </div>
+
+                <div class="col-12">
+                  <label class="form-label fw-semibold">Refund Balance</label>
+                  <input
+                    class="form-control"
+                    [value]="refundBalance"
+                    readonly
+                  />
+                </div>
+
+                <div class="col-12">
+                  <button
+                    class="btn btn-success w-100 py-2 rounded-3"
+                    (click)="savePurchaseReturn()"
+                  >
+                    Save Return
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

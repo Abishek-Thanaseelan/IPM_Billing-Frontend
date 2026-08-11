@@ -1,0 +1,848 @@
+<!-- add-sales.component.html -->
+<div class="sales-page">
+  <!-- TOP BAR -->
+  <div class="top-header">
+    <button class="home-btn" routerLink="/dashboard">
+      <i class="fa fa-home"></i> Home
+    </button>
+
+    <button class="floating-home" routerLink="/dashboard">
+      <i class="fa fa-home"></i>
+    </button>
+    <div class="company">IPMEGA ENTERPRISES (IPMEGA-1)</div>
+    <div class="header-right">
+      <span class="date">
+        {{ currentDate | date: "dd-MM-yyyy / hh:mm a" }}
+      </span>
+    </div>
+  </div>
+  <!-- PAGE TITLE -->
+
+  <h2>Sales</h2>
+  <p>
+    Dashboard /
+    <span>Sales</span>
+  </p>
+  <div class="page-title-box">
+    <div>
+      <h2>Sales</h2>
+      <p>Dashboard / <span>Sales</span></p>
+    </div>
+    <!-- ACTION BUTTONS -->
+    <div class="title-buttons">
+      <!-- <button class="btn-action btn-print" (click)="printHistoryBill(sale)">
+        <i class="fa fa-print"></i>
+        Print
+      </button> -->
+
+      <button class="action-btn" (click)="openStockList()">
+        <i class="fa fa-box"></i> Stock List
+      </button>
+
+      <!-- ADD BELOW THIS BUTTON -->
+
+      <div *ngIf="showStockList" class="stock-popup">
+        <h3>Stock Details</h3>
+
+        <table>
+          <thead>
+            <tr>
+              <th>Product</th>
+              <th>Size</th>
+              <th>Qty</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr *ngFor="let item of stockList">
+              <td>{{ item.productName }}</td>
+              <td>{{ item.productSize }}</td>
+              <td>{{ item.quantity }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <button class="action-btn" (click)="showFilter = !showFilter">
+        <i class="fa fa-filter"></i> Filter
+      </button>
+
+      <button class="action-btn" [routerLink]="salesReportLink">
+        <i class="fa fa-bar-chart"></i> Sales Report
+      </button>
+    </div>
+
+    <!-- FILTER BUTTON -->
+    <div class="title-buttons"></div>
+
+    <!-- FILTER BOX -->
+    <div class="filter-box" *ngIf="showFilter">
+      <label>From Date</label>
+      <input type="date" [(ngModel)]="fromDate" />
+
+      <label>To Date</label>
+      <input type="date" [(ngModel)]="toDate" />
+
+      <button type="button" class="filter-btn" (click)="filterSales()">
+        Apply Filter
+      </button>
+
+      <button type="button" class="filter-btn" (click)="resetSalesView()">
+        Reset
+      </button>
+    </div>
+
+    <div *ngIf="!isFilterMode">
+      <!-- FORM AREA -->
+      <div class="form-container">
+        <!-- Row 1 -->
+        <div class="form-row">
+          <div class="form-group">
+            <label>GST Type</label>
+            <select
+              class="form-control"
+              [(ngModel)]="gstType"
+              (change)="onGstTypeChange()"
+            >
+              <option value="">Select GST Type</option>
+              <option value="GST">GST</option>
+              <option value="Non GST">Non GST</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>Party Type</label>
+            <input
+              type="text"
+              class="form-control"
+              [(ngModel)]="partyType"
+              readonly
+            />
+          </div>
+
+          <div class="form-group">
+            <label>Invoice No</label>
+            <input
+              type="text"
+              class="form-control"
+              [(ngModel)]="invoiceNo"
+              readonly
+            />
+          </div>
+
+          <div class="form-group">
+            <label>Invoice Date</label>
+            <input type="date" class="form-control" [(ngModel)]="invoiceDate" />
+          </div>
+
+          <div class="form-group">
+            <label>Stock Place</label>
+            <select class="form-control" [(ngModel)]="stockPlace">
+              <option>IPMEGA-1</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Row 2 -->
+        <div class="form-row">
+          <div class="form-group">
+            <label>Customer Name</label>
+            <mat-form-field appearance="outline" class="compact-autocomplete">
+              <input
+                type="text"
+                matInput
+                placeholder="Search or enter customer name"
+                [(ngModel)]="customerName"
+                [matAutocomplete]="customerAuto"
+                (input)="onCustomerInput()"
+              />
+              <mat-spinner
+                *ngIf="customerSearching"
+                matSuffix
+                diameter="18"
+              ></mat-spinner>
+              <button
+                *ngIf="selectedCustomerId && !customerSearching"
+                matSuffix
+                mat-icon-button
+                type="button"
+                (click)="clearCustomer()"
+                title="Clear"
+                aria-label="Clear"
+              >
+                <i class="fa fa-times"></i>
+              </button>
+              <mat-autocomplete
+                #customerAuto="matAutocomplete"
+                (optionSelected)="onCustomerSelected($event)"
+              >
+                <mat-option
+                  *ngFor="let c of filteredCustomers"
+                  [value]="c.customerName"
+                >
+                  <div class="ac-item">
+                    <span class="ac-name">{{ c.customerName }}</span>
+                    <span class="ac-detail" *ngIf="c.mobileNumber">
+                      - {{ c.mobileNumber }}
+                    </span>
+                    <span class="ac-detail" *ngIf="c.gstNumber">
+                      ({{ c.gstNumber }})
+                    </span>
+                  </div>
+                </mat-option>
+
+                <mat-option
+                  *ngIf="showNoCustomer"
+                  [value]="''"
+                  disabled
+                  class="ac-empty"
+                >
+                  No customer found
+                </mat-option>
+              </mat-autocomplete>
+            </mat-form-field>
+
+            <div class="ac-add-new" *ngIf="showNoCustomer">
+              Don't see your customer?
+              <a (click)="openAddCustomerModal()">Add New Customer</a>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Customer Address</label>
+            <input
+              type="text"
+              class="form-control"
+              [(ngModel)]="customerAddress"
+            />
+          </div>
+
+          <div class="form-group">
+            <label>State</label>
+            <select class="form-control" [(ngModel)]="state">
+              <option value="">Select State</option>
+              <option value="Tamil Nadu">Tamil Nadu</option>
+              <option value="Kerala">Kerala</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>Mobile No</label>
+            <input
+              type="text"
+              class="form-control"
+              maxlength="10"
+              [(ngModel)]="customerPhone"
+              (input)="validateMobileNumber()"
+            />
+          </div>
+
+          <div class="form-group">
+            <label>GSTIN</label>
+            <input type="text" class="form-control" [(ngModel)]="customerGST" />
+          </div>
+
+          <div class="form-group">
+            <label>Email (Optional)</label>
+            <input
+              type="email"
+              class="form-control"
+              [(ngModel)]="customerEmail"
+              placeholder="Enter customer email"
+            />
+          </div>
+
+          <div class="form-group">
+            <label>Sales Person</label>
+            <input
+              type="text"
+              class="form-control"
+              [(ngModel)]="salesPerson"
+              placeholder="Enter Sales Person Name"
+            />
+          </div>
+        </div>
+      </div>
+      <!-- TABLE -->
+      <div class="card p-3 mt-4">
+        <!-- TABLE -->
+
+        <!-- Buttons -->
+        <div class="text-end mb-3 d-flex justify-content-end gap-2">
+          <button
+            class="btn btn-success px-4 rounded-3 shadow-sm"
+            (click)="openPopup()"
+          >
+            Add New
+          </button>
+
+          <button
+            class="btn btn-primary px-4 rounded-3 shadow-sm"
+            (click)="saveInvoice()"
+          >
+            {{ isEditMode ? 'Update' : 'Save' }}
+          </button>
+
+          <button
+            *ngIf="isEditMode"
+            class="btn btn-secondary px-4 rounded-3 shadow-sm ms-2"
+            (click)="cancelEdit()"
+          >
+            Cancel Edit
+          </button>
+        </div>
+
+        <div class="table-responsive">
+        <table
+          class="custom-table table table-bordered text-center align-middle"
+        >
+          <thead class="table-primary">
+            <tr>
+              <th>S.No</th>
+              <th>Invoice Date</th>
+              <th>Sales Person</th>
+              <th>Customer Name</th>
+              <th>Product Name</th>
+              <th>Size</th>
+              <th>Rate</th>
+              <th>Qty</th>
+              <th>Amount</th>
+              <th>CGST</th>
+              <th>SGST</th>
+              <th>IGST</th>
+              <th>Net Amount</th>
+              <th width="180">Action</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr *ngFor="let item of productList; let i = index">
+              <td>{{ i + 1 }}</td>
+              <td>{{ invoiceDate || "-" }}</td>
+              <td>{{ salesPerson || "-" }}</td>
+
+              <td>{{ customerName || "-" }}</td>
+
+              <td>{{ item.productName }}</td>
+
+              <td>{{ item.productSize }}</td>
+
+              <td>{{ item.rate }}</td>
+
+              <td>{{ item.qty }}</td>
+
+              <td>{{ item.amount }}</td>
+
+              <td>{{ item.cgst }}%</td>
+
+              <td>{{ item.sgst }}%</td>
+
+              <td>{{ item.igst }}%</td>
+
+              <td>{{ item.netAmount }}</td>
+
+              <td>
+                <button
+                  class="btn-action btn-edit"
+                  (click)="editItem(0, i)"
+                  title="Edit"
+                >
+                  <i class="fa fa-edit"></i>
+                </button>
+
+                <button
+                  class="btn-action btn-delete"
+                  (click)="productList.splice(i, 1)"
+                  title="Delete"
+                >
+                  <i class="fa fa-trash"></i>
+                </button>
+              </td>
+            </tr>
+
+            <tr *ngIf="productList.length === 0">
+              <td colspan="12" class="text-center text-muted">
+                No Products Added
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+    <div *ngIf="isFilterMode">
+      <h3 class="sales-history-title">Sales History</h3>
+      <div class="table-responsive">
+      <table
+        class="custom-table sales-history-table table table-bordered table-striped"
+      >
+        <thead>
+          <tr>
+            <th>Sales Person</th>
+            <th>Invoice Date</th>
+            <th>Invoice</th>
+            <th>Customer</th>
+            <th>Product</th>
+            <th>Size</th>
+            <th>Qty</th>
+            <th>Total</th>
+            <th>Received</th>
+            <th>Balance</th>
+            <th>Status</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr *ngFor="let sale of paginatedSalesList; let i = index">
+            <!-- Sales Person -->
+            <td>{{ sale.salesPerson || "-" }}</td>
+
+            <!-- Invoice Date -->
+            <td>{{ sale.invoiceDate | date: "dd-MM-yyyy" }}</td>
+
+            <!-- Invoice No -->
+            <td>{{ sale.invoiceNo || "-" }}</td>
+
+            <!-- Customer -->
+            <td>{{ sale.customerName || "-" }}</td>
+
+            <!-- Products -->
+            <td>
+              <div *ngFor="let item of sale.items" class="product-item">
+                {{ item.productName || "-" }}
+              </div>
+            </td>
+
+            <!-- Size -->
+            <td>
+              <div *ngFor="let item of sale.items" class="size-item">
+                {{ item.productSize || "-" }}
+              </div>
+            </td>
+
+            <!-- Qty -->
+            <td>
+              <div *ngFor="let item of sale.items">
+                {{ item.qty || 0 }}
+              </div>
+            </td>
+
+            <!-- Total Amount -->
+            <td>₹ {{ sale.totalAmount || 0 }}</td>
+
+            <!-- Received -->
+            <td>₹ {{ sale.receivedAmount || 0 }}</td>
+
+            <!-- Balance -->
+            <td>
+              <span
+                class="balance-link"
+                *ngIf="sale.balanceAmount > 0"
+                (click)="openPaymentPopup(sale)"
+              >
+                ₹ {{ sale.balanceAmount }}
+              </span>
+
+              <span *ngIf="sale.balanceAmount === 0"> ₹ 0 </span>
+            </td>
+
+            <!-- Payment Status -->
+            <td>
+              <span class="status-paid" *ngIf="sale.paymentStatus === 'Paid'">
+                Paid
+              </span>
+
+              <span
+                class="status-partial"
+                *ngIf="sale.paymentStatus === 'Partial'"
+              >
+                Partial
+              </span>
+
+              <span class="status-due" *ngIf="sale.paymentStatus === 'Due'">
+                Due
+              </span>
+            </td>
+
+            <!-- Actions -->
+            <td class="action-cell">
+              <button
+                class="btn-action btn-edit"
+                (click)="editSale(sale)"
+                title="Edit Sale"
+              >
+                <i class="fa fa-edit"></i>
+                Edit
+              </button>
+
+              <button
+                class="btn-action btn-receive"
+                *ngIf="sale.balanceAmount > 0"
+                (click)="openPaymentPopup(sale)"
+              >
+                <i class="fa fa-money-bill-wave"></i>
+                Receive Payment
+              </button>
+
+              <button
+                class="btn-action btn-print"
+                (click)="printHistoryBill(sale)"
+              >
+                <i class="fa fa-print"></i>
+                Print
+              </button>
+
+              <button class="action-btn" (click)="downloadPdf(sale)">
+                <i class="fa fa-download"></i>
+              </button>
+            </td>
+          </tr>
+
+          <!-- EMPTY STATE FIX -->
+          <tr *ngIf="paginatedSalesList.length === 0">
+            <td colspan="12" class="text-center">No Sales History Found</td>
+          </tr>
+        </tbody>
+      </table>
+      </div>
+
+      <div class="pagination-section">
+        <button
+          class="btn btn-outline-primary"
+          [disabled]="salesCurrentPage === 1"
+          (click)="previousSalesPage()"
+        >
+          Previous
+        </button>
+
+        <span class="page-info">
+          Page {{ salesCurrentPage }} of {{ salesTotalPages }}
+        </span>
+
+        <button
+          class="btn btn-outline-primary"
+          [disabled]="salesCurrentPage === salesTotalPages"
+          (click)="nextSalesPage()"
+        >
+          Next
+        </button>
+      </div>
+    </div>
+
+    <div class="popup-overlay" *ngIf="showPaymentPopup">
+      <div class="popup-box">
+        <h3>Receive Payment</h3>
+        <hr />
+
+        <p>
+          <strong>Invoice :</strong>
+          {{ selectedSale.invoiceNo }}
+        </p>
+
+        <p>
+          <strong>Customer :</strong>
+          {{ selectedSale.customerName }}
+        </p>
+
+        <div *ngIf="selectedSale.items?.length" class="product-details">
+          <h5>Products</h5>
+
+          <div *ngFor="let item of selectedSale.items" class="product-row">
+            <strong>{{ item.productName }}</strong>
+
+            <span>{{ item.productSize }}</span>
+
+            <span>Qty: {{ item.qty }}</span>
+          </div>
+        </div>
+
+        <p>
+          <strong>Current Balance :</strong>
+          ₹ {{ selectedSale.balanceAmount }}
+        </p>
+
+        <div class="form-group">
+          <label>Receive Amount</label>
+
+          <input
+            type="number"
+            class="form-control"
+            [(ngModel)]="receiveAmount"
+          />
+        </div>
+        <div class="form-group mt-2">
+          <label><strong>Remaining Balance</strong></label>
+
+          <input
+            type="text"
+            class="form-control"
+            [value]="getRemainingBalance()"
+            readonly
+          />
+        </div>
+
+        <div class="mt-3">
+          <button class="btn btn-secondary me-2" (click)="closePaymentPopup()">
+            Cancel
+          </button>
+
+          <button class="btn btn-success" (click)="savePayment()">Save</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ================= POPUP ================= -->
+    <div class="popup-overlay" *ngIf="showPopup">
+      <div class="popup-box">
+        <h3 class="mb-3">Add Product</h3>
+
+        <div class="row">
+          <!-- Product Name -->
+          <div class="col-md-6 mb-3">
+            <label>Product Name</label>
+            <select class="form-control" [(ngModel)]="selectedProductId" (change)="onProductSelect()">
+              <option value="">Select Product</option>
+              <option *ngFor="let p of activeProducts" [value]="p._id">{{ p.productName }} {{ p.productSize ? '- ' + p.productSize : '' }}</option>
+            </select>
+          </div>
+
+          <!-- Size -->
+          <div class="col-md-6 mb-3">
+            <label>Size</label>
+            <input type="text" class="form-control" [value]="popupData.productSize" readonly />
+          </div>
+
+          <!-- Unit -->
+          <div class="col-md-6 mb-3">
+            <label>Unit</label>
+            <input
+              type="text"
+              class="form-control"
+              [(ngModel)]="popupData.unit"
+            />
+          </div>
+
+          <!-- Rate -->
+          <div class="col-md-6 mb-3">
+            <label>Rate</label>
+            <input
+              type="number"
+              class="form-control"
+              [(ngModel)]="popupData.rate"
+              (input)="calculatePopup()"
+            />
+          </div>
+
+          <!-- Qty -->
+          <div class="col-md-6 mb-3">
+            <label>Qty</label>
+            <input
+              type="number"
+              class="form-control"
+              [(ngModel)]="popupData.qty"
+              (input)="calculatePopup()"
+            />
+          </div>
+
+          <!-- Amount (auto) -->
+          <div class="col-md-6 mb-3">
+            <label>Amount</label>
+            <input
+              type="number"
+              class="form-control"
+              [value]="popupData.amount"
+              readonly
+            />
+          </div>
+
+          <!-- CGST -->
+          <div class="col-md-4 mb-3">
+            <label>CGST %</label>
+            <input
+              type="number"
+              class="form-control"
+              [(ngModel)]="popupData.cgst"
+              (input)="calculatePopup()"
+              [readonly]="isZeroGst(popupData.productSize)"
+            />
+          </div>
+
+          <!-- SGST -->
+          <div class="col-md-4 mb-3">
+            <label>SGST %</label>
+            <input
+              type="number"
+              class="form-control"
+              [(ngModel)]="popupData.sgst"
+              (input)="calculatePopup()"
+              [readonly]="isZeroGst(popupData.productSize)"
+            />
+          </div>
+
+          <!-- IGST -->
+          <div class="col-md-4 mb-3">
+            <label>IGST %</label>
+            <input
+              type="number"
+              class="form-control"
+              [(ngModel)]="popupData.igst"
+              (input)="calculatePopup()"
+              [readonly]="isZeroGst(popupData.productSize)"
+            />
+          </div>
+
+          <!-- Net Amount -->
+          <div class="col-md-12 mb-3">
+            <label>Net Amount</label>
+            <input
+              type="number"
+              class="form-control"
+              [value]="popupData.netAmount"
+              readonly
+            />
+          </div>
+        </div>
+
+        <!-- Buttons -->
+        <div class="text-end mt-3">
+          <button class="btn btn-secondary me-2" (click)="closePopup()">
+            Close
+          </button>
+
+          <button class="btn btn-warning me-2" (click)="clearPopup()">
+            Clear
+          </button>
+
+          <button
+            class="btn btn-primary"
+            (click)="insertProduct()"
+            [disabled]="!isPopupValid()"
+          >
+            Insert
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="stock-popup-bg" *ngIf="showStockList">
+      <div class="stock-popup">
+        <div class="popup-header">
+          <h3>Stock Details</h3>
+
+          <button class="close-btn" (click)="showStockList = false">X</button>
+        </div>
+
+        <table>
+          <thead>
+            <tr>
+              <th>Product</th>
+              <th>Size</th>
+              <th>Qty</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr *ngFor="let item of stockList">
+              <td>{{ item.productName }}</td>
+              <td>{{ item.productSize }}</td>
+              <td>{{ item.qty }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ADD CUSTOMER MODAL -->
+<div class="contact-modal-overlay" *ngIf="showAddCustomerModal">
+  <div class="contact-modal-box">
+    <h3>Add New Customer</h3>
+    <hr />
+
+    <div class="row g-3">
+      <div class="col-md-6">
+        <label>Customer Name *</label>
+        <input
+          type="text"
+          class="form-control"
+          [(ngModel)]="newCustomer.customerName"
+          placeholder="Enter customer name"
+        />
+      </div>
+
+      <div class="col-md-6">
+        <label>Mobile Number</label>
+        <input
+          type="text"
+          class="form-control"
+          maxlength="10"
+          [(ngModel)]="newCustomer.mobileNumber"
+          placeholder="10 digit mobile number"
+          (keypress)="allowOnlyNumbers($event)"
+        />
+      </div>
+
+      <div class="col-md-6">
+        <label>GST Number</label>
+        <input
+          type="text"
+          class="form-control"
+          [(ngModel)]="newCustomer.gstNumber"
+          placeholder="Enter GST number"
+        />
+      </div>
+
+      <div class="col-md-6">
+        <label>Email (Optional)</label>
+        <input
+          type="email"
+          class="form-control"
+          [(ngModel)]="newCustomer.email"
+          placeholder="Enter email"
+        />
+      </div>
+
+      <div class="col-12">
+        <label>Address</label>
+        <input
+          type="text"
+          class="form-control"
+          [(ngModel)]="newCustomer.address"
+          placeholder="Enter address"
+        />
+      </div>
+    </div>
+
+    <div class="modal-actions">
+      <button class="btn btn-secondary" (click)="closeAddCustomerModal()">
+        Cancel
+      </button>
+      <button class="btn btn-primary" (click)="saveNewCustomer()">
+        Save Customer
+      </button>
+    </div>
+  </div>
+</div>
+
+<div id="pdf-container" *ngIf="selectedInvoice">
+  <app-print-bill
+    [billNo]="selectedInvoice?.invoiceNo"
+    [billDate]="selectedInvoice?.invoiceDate"
+    [customerName]="selectedInvoice?.customerName"
+    [customerPhone]="selectedInvoice?.mobileNo"
+    [customerGST]="selectedInvoice?.gstin"
+    [salesList]="selectedInvoice?.items"
+    [receivedAmount]="selectedInvoice?.receivedAmount"
+    [balanceAmount]="selectedInvoice?.balanceAmount"
+    [companyName]="companyName"
+    [companyAddress]="companyAddress"
+    [companyGST]="companyGST"
+    [customerState]="state"
+    [companyPhone]="companyPhone"
+    [companyEmail]="companyEmail"
+    [salesPerson]="selectedInvoice?.salesPerson"
+  >
+  </app-print-bill>
+</div>

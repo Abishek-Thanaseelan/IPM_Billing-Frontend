@@ -1,0 +1,241 @@
+/* ==========================
+   REGISTER PAGE
+========================== */
+
+.register-page {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(135deg, #0d6efd, #084298);
+  font-family: Arial, Helvetica, sans-serif;
+  padding: 20px;
+}
+
+/* ==========================
+   CONTAINER
+========================== */
+
+.register-container {
+  width: 1000px;
+  min-height: 620px;
+  background: #ffffff;
+  border-radius: 20px;
+  overflow: hidden;
+  display: flex;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, .25);
+}
+
+/* ==========================
+   LEFT SECTION
+========================== */
+
+.left-section {
+  width: 45%;
+  background: linear-gradient(160deg, #0d6efd, #0b5ed7);
+  color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 40px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.left-section::before {
+  content: "";
+  position: absolute;
+  width: 240px;
+  height: 240px;
+  background: #ffc107;
+  border-radius: 50%;
+  top: -70px;
+  left: -70px;
+}
+
+.left-section::after {
+  content: "";
+  position: absolute;
+  width: 200px;
+  height: 200px;
+  /* background: #ffc107; */
+  border-radius: 50%;
+  bottom: -50px;
+  right: -50px;
+}
+
+.company-logo {
+  width: 140px;
+  height: 140px;
+  object-fit: contain;
+  background: #ffffff;
+  border-radius: 50%;
+  padding: 12px;
+  margin-bottom: 20px;
+  box-shadow: 0 10px 20px rgba(0,0,0,.25);
+  z-index: 1;
+}
+
+.left-section h1 {
+  color: #ffffff;
+  font-size: 30px;
+  font-weight: 700;
+  z-index: 1;
+}
+
+.left-section p {
+  color: rgba(255,255,255,.9);
+  z-index: 1;
+}
+
+/* ==========================
+   RIGHT SECTION
+========================== */
+
+.right-section {
+  width: 55%;
+  background: #ffffff;
+  padding: 45px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.right-section h2 {
+  color: #0d6efd;
+  font-weight: 700;
+  margin-bottom: 25px;
+}
+
+/* ==========================
+   INPUTS
+========================== */
+
+.form-control {
+  height: 50px;
+  border-radius: 10px;
+  border: 2px solid #dbe4ff;
+  background: #ffffff;
+  color: #333;
+  transition: .3s;
+}
+
+.form-control::placeholder {
+  color: #888;
+}
+
+.form-control:focus {
+  border-color: #0d6efd;
+  box-shadow: 0 0 0 4px rgba(13,110,253,.15);
+}
+
+select.form-control {
+  color: #333;
+}
+
+/* ==========================
+   PASSWORD
+========================== */
+
+.password-wrapper {
+  position: relative;
+}
+
+.password-wrapper .form-control {
+  padding-right: 45px;
+}
+
+.password-wrapper i {
+  position: absolute;
+  right: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #0d6efd;
+  cursor: pointer;
+  font-size: 18px;
+  transition: .3s;
+}
+
+.password-wrapper i:hover {
+  color: #ffc107;
+}
+
+/* ==========================
+   BUTTON
+========================== */
+
+.register-btn {
+  height: 52px;
+  border: none;
+  border-radius: 10px;
+  background: #ffc107;
+  color: #000;
+  font-size: 17px;
+  font-weight: bold;
+  transition: .3s;
+}
+
+.register-btn:hover {
+  background: #0d6efd;
+  color: #ffffff;
+  transform: translateY(-2px);
+}
+
+/* ==========================
+   LOGIN LINK
+========================== */
+
+.login-link {
+  color: #666;
+}
+
+.login-link a {
+  color: #0d6efd;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.login-link a:hover {
+  color: #ffc107;
+  text-decoration: underline;
+}
+
+/* ==========================
+   MOBILE
+========================== */
+
+@media (max-width:768px) {
+
+  .register-container {
+    width: 100%;
+    flex-direction: column;
+  }
+
+  .left-section,
+  .right-section {
+    width: 100%;
+  }
+
+  .left-section {
+    padding: 35px 20px;
+  }
+
+  .right-section {
+    padding: 35px 25px;
+  }
+
+  .company-logo {
+    width: 100px;
+    height: 100px;
+  }
+
+  .left-section h1 {
+    font-size: 24px;
+  }
+
+  .right-section h2 {
+    font-size: 28px;
+  }
+}

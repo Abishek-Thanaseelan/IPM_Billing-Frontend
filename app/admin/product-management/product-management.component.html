@@ -1,0 +1,108 @@
+<div class="product-page">
+  <div class="page-header">
+    <h2><i class="fa fa-cube"></i> Product Management</h2>
+    <button class="btn btn-primary" (click)="openAdd()"><i class="fa fa-plus"></i> Add Product</button>
+  </div>
+
+  <div class="form-card" *ngIf="showForm">
+    <div class="form-card-header">
+      <h5>{{ editMode ? 'Edit' : 'Add' }} Product</h5>
+      <button class="btn-close" (click)="closeForm()">&times;</button>
+    </div>
+    <div class="form-card-body">
+      <div class="form-row">
+        <div class="form-group">
+          <label>Product Name *</label>
+          <input type="text" class="form-control" [(ngModel)]="formData.productName" />
+        </div>
+        <!-- <div class="form-group">
+          <label>Category</label>
+          <input type="text" class="form-control" [(ngModel)]="formData.category" />
+        </div> -->
+        <div class="form-group">
+          <label>Size / Variant</label>
+          <input type="text" class="form-control" [(ngModel)]="formData.productSize" (input)="onSizeChange()" />
+        </div>
+        <div class="form-group">
+          <label>Unit</label>
+          <input type="text" class="form-control" [(ngModel)]="formData.unit" />
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Purchase Price</label>
+          <input type="number" class="form-control" [(ngModel)]="formData.purchasePrice" />
+        </div>
+        <div class="form-group">
+          <label>Selling Price</label>
+          <input type="number" class="form-control" [(ngModel)]="formData.sellingPrice" />
+        </div>
+        <div class="form-group">
+          <label>GST %</label>
+          <input
+            type="number"
+            class="form-control"
+            [(ngModel)]="formData.gstPercent"
+            [readonly]="isZeroGstSize(formData.productSize)"
+          />
+          <small *ngIf="isZeroGstSize(formData.productSize)" class="text-success">
+            GST automatically 0% for 26 KG
+          </small>
+          <small *ngIf="!isZeroGstSize(formData.productSize)" class="text-muted">
+            5 KG / 10 KG → 5% &nbsp;|&nbsp; 26 KG → 0%
+          </small>
+        </div>
+        <div class="form-group">
+          <label>Status</label>
+          <select class="form-control" [(ngModel)]="formData.status">
+            <option value="Active">Active</option>
+            <option value="Inactive">Inactive</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group form-group-full">
+          <label>Description</label>
+          <textarea class="form-control" [(ngModel)]="formData.description" rows="2"></textarea>
+        </div>
+      </div>
+      <div class="form-actions">
+        <button class="btn btn-primary" (click)="save()">{{ editMode ? 'Update' : 'Save' }}</button>
+        <button class="btn btn-outline-secondary" (click)="closeForm()">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="table-card">
+    <div class="table-header">
+      <h5><i class="fa fa-list"></i> All Products</h5>
+      <span class="badge">{{ products.length }} products</span>
+    </div>
+    <div class="table-body" *ngIf="!loading">
+      <table class="table table-hover">
+        <thead>
+          <tr><th>#</th><th>Name</th><th>Size</th><th>Category</th><th>Purchase</th><th>Selling</th><th>GST%</th><th>Added By</th><th>Created</th><th>Status</th><th>Actions</th></tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let p of products; let i=index">
+            <td>{{i+1}}</td>
+            <td>{{p.productName}}</td>
+            <td>{{p.productSize}}</td>
+            <td>{{p.category}}</td>
+            <td>₹{{p.purchasePrice}}</td>
+            <td>₹{{p.sellingPrice}}</td>
+            <td>{{p.gstPercent}}%</td>
+            <td>{{p.addedBy || '-'}}</td>
+            <td>{{p.createdAt | date:'dd-MM-yyyy'}}</td>
+            <td><span class="badge-status" [class.paid]="p.status==='Active'" [class.due]="p.status!=='Active'">{{p.status}}</span></td>
+            <td>
+              <button class="btn btn-sm btn-outline-primary me-1" (click)="openEdit(p)"><i class="fa fa-pencil"></i></button>
+              <button class="btn btn-sm btn-outline-danger" (click)="deleteProduct(p._id)"><i class="fa fa-trash"></i></button>
+            </td>
+          </tr>
+          <tr *ngIf="products.length === 0"><td colspan="11" class="text-center text-muted">No products found</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

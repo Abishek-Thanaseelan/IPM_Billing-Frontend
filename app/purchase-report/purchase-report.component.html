@@ -1,0 +1,181 @@
+<div class="container-fluid">
+  <div class="report-header-card">
+    <div class="header-top">
+      <button class="back-btn" (click)="goBack()">
+        <i class="fa fa-arrow-left me-2"></i> Back
+      </button>
+      <h2 class="page-title">
+        <i class="fa fa-cart-plus me-2"></i>
+        Purchase Report
+      </h2>
+    </div>
+
+    <div class="row mt-3">
+      <div class="col-md-2">
+        <label class="form-label">From Date</label>
+        <input type="date" class="form-control" [(ngModel)]="fromDate" />
+      </div>
+      <div class="col-md-2">
+        <label class="form-label">To Date</label>
+        <input type="date" class="form-control" [(ngModel)]="toDate" />
+      </div>
+      <div class="col-md-2">
+        <label class="form-label">Supplier Name</label>
+        <input type="text" class="form-control" [(ngModel)]="filterSupplier"
+               list="supplierList" placeholder="All suppliers" />
+        <datalist id="supplierList">
+          <option *ngFor="let s of supplierSuggestions" [value]="s"></option>
+        </datalist>
+      </div>
+      <div class="col-md-2">
+        <label class="form-label">Product Name</label>
+        <input type="text" class="form-control" [(ngModel)]="filterProduct"
+               list="productList" placeholder="All products" />
+        <datalist id="productList">
+          <option *ngFor="let p of productSuggestions" [value]="p"></option>
+        </datalist>
+      </div>
+      <div class="col-md-2">
+        <label class="form-label">Search</label>
+        <input type="text" class="form-control" [(ngModel)]="searchQuery"
+               placeholder="Invoice / Supplier / Product" />
+      </div>
+      <div class="col-md-2 d-flex align-items-end gap-2">
+        <button class="btn btn-primary" (click)="applyFilter()">
+          <i class="fa fa-search me-1"></i> Filter
+        </button>
+        <button class="btn btn-secondary" (click)="resetFilter()">
+          <i class="fa fa-refresh me-1"></i> Reset
+        </button>
+      </div>
+    </div>
+
+    <div class="row mt-3">
+      <div class="col-md-2">
+        <div class="summary-box">
+          <span class="label">Invoices</span>
+          <span class="value">{{ totalInvoices }}</span>
+        </div>
+      </div>
+      <div class="col-md-2">
+        <div class="summary-box">
+          <span class="label">Total Qty</span>
+          <span class="value">{{ totalQty }}</span>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="summary-box">
+          <span class="label">Total Purchase</span>
+          <span class="value text-success">&#8377;{{ totalPurchaseAmount | number:'1.2-2' }}</span>
+        </div>
+      </div>
+      <div class="col-md-2">
+        <div class="summary-box">
+          <span class="label">Total GST</span>
+          <span class="value">&#8377;{{ totalGst | number:'1.2-2' }}</span>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="summary-box">
+          <span class="label">Total Discount</span>
+          <span class="value text-danger">&#8377;{{ totalDiscount | number:'1.2-2' }}</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="d-flex justify-content-end mt-3 gap-2">
+      <button class="btn btn-outline-primary" (click)="printReport()">
+        <i class="fa fa-print me-1"></i> Print
+      </button>
+      <button class="btn btn-outline-danger" (click)="downloadPdf()">
+        <i class="fa fa-file-pdf-o me-1"></i> PDF
+      </button>
+      <button class="btn btn-outline-success" (click)="exportExcel()">
+        <i class="fa fa-file-excel-o me-1"></i> Excel
+      </button>
+    </div>
+  </div>
+
+  <div class="card mt-3 p-3" *ngIf="loading">
+    <div class="text-center py-4">
+      <i class="fa fa-spinner fa-spin fa-2x"></i>
+      <p class="mt-2">Loading purchase data...</p>
+    </div>
+  </div>
+
+  <div class="card mt-3 p-3" *ngIf="!loading">
+    <div class="table-responsive" id="purchase-report-table">
+      <table class="table table-bordered table-hover">
+        <thead class="table-primary">
+          <tr>
+            <th (click)="sortBy('invoiceDate')" class="sortable">
+              Purchase Date <i class="fa {{ getSortIcon('invoiceDate') }}"></i>
+            </th>
+            <th (click)="sortBy('invoiceNo')" class="sortable">
+              Invoice No <i class="fa {{ getSortIcon('invoiceNo') }}"></i>
+            </th>
+            <th (click)="sortBy('supplierName')" class="sortable">
+              Supplier Name <i class="fa {{ getSortIcon('supplierName') }}"></i>
+            </th>
+            <th>Supplier Mobile</th>
+            <th (click)="sortBy('productName')" class="sortable">
+              Product Name <i class="fa {{ getSortIcon('productName') }}"></i>
+            </th>
+            <th>Product Size</th>
+            <th (click)="sortBy('qty')" class="sortable">
+              Qty <i class="fa {{ getSortIcon('qty') }}"></i>
+            </th>
+            <th>Price</th>
+            <th>GST %</th>
+            <th>GST Amount</th>
+            <th>Discount</th>
+            <th>Taxable</th>
+            <th>Net Amount</th>
+            <th>Total Amount</th>
+            <th>Payment</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let row of pagedRows">
+            <td>{{ row.invoiceDate }}</td>
+            <td>{{ row.invoiceNo }}</td>
+            <td>{{ row.supplierName }}</td>
+            <td>{{ row.mobileNo }}</td>
+            <td>{{ row.productName }}</td>
+            <td>{{ row.productSize }}</td>
+            <td>{{ row.qty }}</td>
+            <td>&#8377;{{ row.rate | number:'1.2-2' }}</td>
+            <td>{{ row.gstPercent }}%</td>
+            <td>&#8377;{{ row.gstAmount | number:'1.2-2' }}</td>
+            <td>&#8377;{{ row.discount | number:'1.2-2' }}</td>
+            <td>&#8377;{{ row.taxableAmount | number:'1.2-2' }}</td>
+            <td>&#8377;{{ row.netAmount | number:'1.2-2' }}</td>
+            <td>&#8377;{{ row.totalAmount | number:'1.2-2' }}</td>
+            <td>{{ row.paymentMethod }}</td>
+          </tr>
+          <tr *ngIf="pagedRows.length === 0">
+            <td colspan="15" class="text-center py-3">No records found</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="d-flex justify-content-between align-items-center mt-3" *ngIf="filteredRows.length > 0">
+      <span>Showing {{ (currentPage - 1) * pageSize + 1 }} to {{ Math.min(currentPage * pageSize, filteredRows.length) }} of {{ filteredRows.length }} records</span>
+      <nav>
+        <ul class="pagination mb-0">
+          <li class="page-item" [class.disabled]="currentPage === 1">
+            <a class="page-link" (click)="goToPage(currentPage - 1)">Previous</a>
+          </li>
+          <li class="page-item" *ngFor="let p of [].constructor(totalPages); let i = index"
+            [class.active]="currentPage === i + 1">
+            <a class="page-link" (click)="goToPage(i + 1)">{{ i + 1 }}</a>
+          </li>
+          <li class="page-item" [class.disabled]="currentPage === totalPages">
+            <a class="page-link" (click)="goToPage(currentPage + 1)">Next</a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </div>
+</div>

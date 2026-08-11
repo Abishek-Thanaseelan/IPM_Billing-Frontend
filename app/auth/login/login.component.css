@@ -1,0 +1,246 @@
+/* ==========================
+   LOGIN PAGE
+========================== */
+
+.login-page {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(135deg, #0d6efd, #084298);
+  font-family: Arial, Helvetica, sans-serif;
+  padding: 20px;
+}
+
+/* ==========================
+   CONTAINER
+========================== */
+
+.login-container {
+  width: 920px;
+  min-height: 540px;
+  background: #ffffff;
+  border-radius: 20px;
+  overflow: hidden;
+  display: flex;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.25);
+}
+
+/* ==========================
+   LEFT SECTION
+========================== */
+
+.left-section {
+  width: 50%;
+  background: linear-gradient(160deg, #0d6efd, #0b5ed7);
+  color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 40px;
+  text-align: center;
+  position: relative;
+}
+
+.left-section::before {
+  content: "";
+  position: absolute;
+  width: 220px;
+  height: 220px;
+  background: #ffc107;
+  border-radius: 50%;
+  top: -60px;
+  left: -60px;
+}
+
+.left-section::after {
+  content: "";
+  position: absolute;
+  width: 180px;
+  height: 180px;
+  /* background: #ffc107; */
+  border-radius: 50%;
+  bottom: -40px;
+  right: -40px;
+}
+
+.company-logo {
+  width: 140px;
+  height: 140px;
+  object-fit: contain;
+  margin-bottom: 25px;
+  background: white;
+  border-radius: 50%;
+  padding: 12px;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+}
+
+.left-section h1 {
+  font-size: 30px;
+  font-weight: bold;
+  margin-top: 10px;
+  color: #ffffff;
+  z-index: 1;
+}
+
+.left-section p {
+  color: rgba(255, 255, 255, 0.85);
+  margin-top: 10px;
+  line-height: 1.6;
+  z-index: 1;
+}
+
+/* ==========================
+   RIGHT SECTION
+========================== */
+
+.right-section {
+  width: 50%;
+  background: #ffffff;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 60px 45px;
+}
+
+.right-section h2 {
+  color: #0d6efd;
+  font-weight: bold;
+  margin-bottom: 30px;
+}
+
+.right-section label {
+  font-weight: 600;
+  color: #444;
+  margin-bottom: 6px;
+}
+
+/* ==========================
+   INPUT
+========================== */
+
+.right-section .form-control {
+  height: 50px;
+  border-radius: 10px;
+  border: 2px solid #dbe4ff;
+  transition: 0.3s;
+  font-size: 15px;
+}
+
+.right-section .form-control::placeholder {
+  color: #999;
+}
+
+.right-section .form-control:focus {
+  border-color: #0d6efd;
+  box-shadow: 0 0 0 4px rgba(13, 110, 253, 0.15);
+}
+
+/* ==========================
+   PASSWORD
+========================== */
+
+.password-wrapper {
+  position: relative;
+}
+
+.password-wrapper .form-control {
+  padding-right: 45px;
+}
+
+.password-wrapper i {
+  position: absolute;
+  right: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #0d6efd;
+  cursor: pointer;
+  font-size: 18px;
+  transition: .3s;
+}
+
+.password-wrapper i:hover {
+  color: #ffc107;
+}
+
+/* ==========================
+   LOGIN BUTTON
+========================== */
+
+.login-btn {
+  height: 52px;
+  background: #ffc107;
+  color: #000;
+  font-weight: bold;
+  font-size: 17px;
+  border: none;
+  border-radius: 10px;
+  transition: .3s;
+}
+
+.login-btn:hover {
+  background: #0d6efd;
+  color: white;
+  transform: translateY(-2px);
+}
+
+/* ==========================
+   REGISTER
+========================== */
+
+.register-section {
+  margin-top: 20px;
+  color: #666;
+}
+
+.register-link {
+  color: #0d6efd;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.register-link:hover {
+  color: #ffc107;
+  text-decoration: underline;
+}
+
+/* ==========================
+   MOBILE
+========================== */
+
+@media(max-width:768px){
+
+.login-container{
+    width:100%;
+    flex-direction:column;
+}
+
+.left-section,
+.right-section{
+    width:100%;
+}
+
+.left-section{
+    padding:35px 20px;
+}
+
+.right-section{
+    padding:35px 25px;
+}
+
+.company-logo{
+    width:100px;
+    height:100px;
+}
+
+.left-section h1{
+    font-size:24px;
+}
+
+.right-section h2{
+    font-size:28px;
+}
+
+}

@@ -1,0 +1,440 @@
+/* =========================
+   PAGE
+========================= */
+
+body {
+  background: #f4f7fc;
+  font-family: "Segoe UI", sans-serif;
+}
+
+.container-fluid {
+  padding: 20px;
+}
+
+/* =========================
+   MAIN CARD
+========================= */
+
+.card {
+  border: none;
+  border-radius: 18px;
+  overflow: hidden;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+  background: #fff;
+}
+
+/* =========================
+   HEADER
+========================= */
+
+.card-header {
+  background: #0d6efd !important;
+  color: white;
+  border: none;
+  min-height: 75px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+  padding: 15px 25px;
+}
+
+.card-header h4 {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  margin: 0;
+  font-size: 26px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+/* =========================
+   HEADER RIGHT
+========================= */
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.date {
+  font-size: 14px;
+  font-weight: 600;
+  color: white;
+}
+
+/* =========================
+   BUTTONS
+========================= */
+
+.home-btn,
+.logout-btn {
+  background: white;
+  color: #0d6efd;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 10px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: 0.3s;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.15);
+}
+
+.home-btn:hover,
+.logout-btn:hover {
+  transform: translateY(-2px);
+  background: #f8f9fa;
+}
+
+.btn {
+  border-radius: 10px;
+  font-weight: 600;
+  transition: 0.3s;
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+}
+
+.btn-primary {
+  background: #0d6efd;
+  border: none;
+}
+
+.btn-warning {
+  background: #ffc107;
+  border: none;
+  color: #000;
+}
+
+.btn-success {
+  background: #198754;
+  border: none;
+}
+
+.btn-danger {
+  border: none;
+  background: #dc3545;
+}
+
+.btn-danger:hover {
+  background: #bb2d3b;
+}
+
+/* =========================
+   SEARCH SECTION
+========================= */
+
+.search-section {
+  background: white;
+  border-radius: 15px;
+  padding: 20px;
+  margin-bottom: 20px;
+  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.06);
+}
+
+/* =========================
+   LABELS
+========================= */
+
+label {
+  font-weight: 700;
+  color: #444;
+  margin-bottom: 6px;
+}
+
+/* =========================
+   INPUTS
+========================= */
+
+.form-control {
+  height: 46px;
+  border-radius: 10px;
+  border: 1px solid #dce1e7;
+  transition: 0.3s;
+  font-weight: 500;
+}
+
+.form-control:focus {
+  border-color: #0d6efd;
+  box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.15);
+}
+
+input[readonly] {
+  background: #f8f9fa;
+  font-weight: 700;
+}
+
+/* =========================
+   TABLE
+========================= */
+
+.table-responsive {
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.05);
+}
+
+.table {
+  margin-bottom: 0;
+}
+
+/* NO FADE / NO GRADIENT */
+
+.table thead {
+  background: #0d6efd !important;
+}
+
+.table thead th {
+  background: #0d6efd !important;
+  color: white;
+  text-align: center;
+  vertical-align: middle;
+  padding: 14px;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.4px;
+  border-color: #0b5ed7;
+}
+
+.table tbody td {
+  vertical-align: middle;
+  padding: 12px;
+  font-size: 14px;
+}
+
+.table tbody tr {
+  transition: 0.25s;
+}
+
+.table tbody tr:hover {
+  background: #eef5ff;
+}
+
+.table tbody td:nth-child(6) {
+  color: #0d6efd;
+  font-weight: 700;
+}
+
+.table tbody td:nth-child(10) {
+  color: #198754;
+  font-weight: 700;
+}
+
+.table input {
+  text-align: center;
+  font-weight: 700;
+}
+
+/* =========================
+   SALES & RETURN CARDS
+========================= */
+
+.card.border-primary,
+.card.border-warning {
+  border: none !important;
+  border-radius: 15px;
+  overflow: hidden;
+  height: 100%;
+}
+
+.card.border-primary .card-header {
+  background: #0d6efd !important;
+  color: white;
+  position: static;
+  transform: none;
+  min-height: auto;
+  font-size: 16px;
+}
+
+.card.border-warning .card-header {
+  background: #ffc107 !important;
+  color: #000;
+  position: static;
+  transform: none;
+  min-height: auto;
+  font-size: 16px;
+}
+
+.card.border-primary .card-body,
+.card.border-warning .card-body {
+  min-height: 240px;
+}
+
+/* =========================
+   SUMMARY INPUTS
+========================= */
+
+.card-body .form-control {
+  font-size: 16px;
+  font-weight: 700;
+}
+
+/* =========================
+   SAVE BUTTON
+========================= */
+
+.save-btn {
+  min-width: 300px;
+  height: 55px;
+  font-size: 18px;
+  font-weight: 700;
+  border-radius: 12px;
+  background: #198754;
+  border: none;
+}
+
+.save-btn:hover {
+  background: #157347;
+}
+
+/* =========================
+   COLORS
+========================= */
+
+.text-primary {
+  color: #0d6efd !important;
+  font-weight: 700 !important;
+}
+
+.text-success {
+  color: #198754 !important;
+  font-weight: 700 !important;
+}
+
+.text-danger {
+  color: #dc3545 !important;
+  font-weight: 700 !important;
+}
+
+/* =========================
+   FLOATING HOME
+========================= */
+
+.floating-home {
+  position: fixed;
+  right: 25px;
+  bottom: 25px;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  border: none;
+  background: #0d6efd;
+  color: white;
+  font-size: 22px;
+  cursor: pointer;
+  z-index: 9999;
+  box-shadow: 0 10px 25px rgba(13, 110, 253, 0.35);
+  transition: 0.3s;
+}
+
+.floating-home:hover {
+  transform: scale(1.08);
+}
+
+/* =========================
+   TOAST
+========================= */
+
+#toast-container {
+  top: 12px !important;
+  right: 12px !important;
+}
+
+.custom-warning {
+  background: #ff9800 !important;
+  color: white !important;
+}
+
+.custom-warning .toast-title,
+.custom-warning .toast-message {
+  color: white !important;
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media (max-width: 991px) {
+  .card.border-primary,
+  .card.border-warning {
+    margin-bottom: 15px;
+  }
+
+  .save-btn {
+    width: 100%;
+    min-width: auto;
+  }
+}
+
+@media (max-width: 768px) {
+  .card-header {
+    flex-direction: column;
+    gap: 10px;
+    padding: 20px;
+  }
+
+  .card-header h4 {
+    position: static;
+    transform: none;
+  }
+
+  .header-right {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .table {
+    min-width: 1100px;
+  }
+
+  .form-control {
+    height: 42px;
+  }
+
+  .btn {
+    margin-top: 5px;
+  }
+}
+
+.table-responsive {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+table {
+  min-width: 1000px;
+}
+
+@media (max-width: 768px) {
+  table th,
+  table td {
+    font-size: 12px;
+    padding: 6px;
+  }
+
+  input.form-control {
+    min-width: 70px;
+  }
+}
+
+/* ------------------ */
+
+.search-section {
+  background: #fff;
+  padding: 15px;
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+}
+
+/* input height consistency */
+.search-section .form-control {
+  height: 42px;
+}
+
+/* button alignment */
+.search-section .btn {
+  height: 42px;
+}

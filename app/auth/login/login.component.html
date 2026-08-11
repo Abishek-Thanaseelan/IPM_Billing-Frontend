@@ -1,0 +1,56 @@
+<div class="login-page">
+  <div class="login-container">
+    <!-- LEFT SIDE -->
+
+    <div class="left-section">
+      <img src="assets/icon.png" alt="Company Logo" class="company-logo" />
+
+      <h1>IPMEGA ENTERPRISES</h1>
+    </div>
+
+    <!-- RIGHT SIDE -->
+
+    <div class="right-section">
+      <h2 class="mb-4 text-center">Admin Login</h2>
+
+      <label>Username / Mobile / Email</label>
+
+      <input
+        type="text"
+        class="form-control"
+        [(ngModel)]="formData.loginId"
+        placeholder="Enter Username / Mobile / Email"
+      />
+
+    <div class="mb-4">
+  <label>Password</label>
+
+  <div class="password-wrapper">
+    <input
+      [type]="showPassword ? 'text' : 'password'"
+      class="form-control"
+      [(ngModel)]="formData.password"
+      name="password"
+      placeholder="Enter Password"
+    />
+
+    <i
+      class="fa"
+      [ngClass]="showPassword ? 'fa-eye-slash' : 'fa-eye'"
+      (click)="togglePassword()"
+    ></i>
+  </div>
+</div>
+
+      <button type="button" class="btn login-btn w-100" (click)="login()">
+        Login
+      </button>
+
+      <div class="register-section text-center mt-3">
+        <span>Don't have an account?</span>
+
+        <a routerLink="/register" class="register-link"> Register </a>
+      </div>
+    </div>
+  </div>
+</div>
